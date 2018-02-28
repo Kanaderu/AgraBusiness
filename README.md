@@ -1,18 +1,18 @@
-## AgraBusiness
+# AgraBusiness
 The AgraBusiness Web Application for CPS 592
 
-## Initial Setup
+# Initial Setup
 First initial setup of the Django web application with a "market" application. Database and superuser need to be setup.
 
-# To setup database:
+## To setup database:
 run 'python manage.py makemigrations'
 run 'python manage.py migrate'
 
-# To setup superuser:
+## To setup superuser:
 run 'python manage.py createsuperuser'
 
-# To run server:
+## To run server:
 run 'python manage.py runserver'
 
-# To flush database:
+## To flush database:
 run 'python manage.py flush'
