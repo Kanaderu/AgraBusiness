@@ -19,8 +19,10 @@
       card_number: {{ user.userinfo.payment_method.billing_credit_card.number }}<br/>
       card_exp: {{ user.userinfo.payment_method.billing_credit_card.exp }}<br/>
       <a href="{% url 'logout' %}">logout</a>
+      <a href="{% url 'user' %}">edit user</a>
     {% else %}
       <a href="{% url 'login' %}">login</a>
+      <a href="{% url 'register' %}">register</a>
     {% endif %}
   </header>
   <hr>
