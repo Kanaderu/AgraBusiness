@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User as dUser
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CreditCard(models.Model):
@@ -28,26 +30,35 @@ class PaymentMethod(models.Model):
     billing_zip_code = models.IntegerField(help_text="Billing Address Zip Code")
     billing_state = models.CharField(max_length=2, help_text="Billing Address State")
     billing_city = models.CharField(max_length=256, help_text="Billing Address City")
-    billing_credit_card = models.ForeignKey('CreditCard', on_delete=models.SET_NULL, null=True)
-    billing_bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True)
+    billing_credit_card = models.ForeignKey('CreditCard', on_delete=models.SET_NULL, default=None, null=True, blank=True)
+    billing_bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, default=None, null=True, blank=True)
 
     def __str__(self):
         return self.billing_address_line1
 
 
-class User(models.Model):
+class UserInfo(models.Model):
     USER_TYPE = (
         ('f', 'Farmer'),
         ('c', 'Customer'),
         ('m', 'Manager')
     )
 
-    user = models.OneToOneField(dUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=1, choices=USER_TYPE, default='c', help_text="User Account Type")
-    first_name = models.CharField(max_length=256)
-    last_name = models.CharField(max_length=256)
-    payment_method = models.OneToOneField(PaymentMethod, on_delete=models.CASCADE)
+    payment_method = models.OneToOneField(PaymentMethod, default=None, null=True, on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.user.first_name + ' ' + self.user.last_name
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserInfo.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userinfo.save()
 

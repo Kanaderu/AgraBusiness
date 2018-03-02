@@ -8,7 +8,16 @@
   <header>
     <h1>Django Simple Login</h1>
     {% if user.is_authenticated %}
-      Hi {{ user.username }}!
+      Hi {{ user.username }}!<br/>
+      Last Login: {{ user.last_login }}<br/>
+      email: {{ user.email }}<br/>
+      first_name: {{ user.first_name }}<br/>
+      first_name: {{ user.last_name }}<br/>
+      user_type: {{ user.userinfo.user_type }}<br/>
+      billing_line1: {{ user.userinfo.payment_method.billing_address_line1 }}<br/>
+      billing_line2: {{ user.userinfo.payment_method.billing_address_line2 }}<br/>
+      card_number: {{ user.userinfo.payment_method.billing_credit_card.number }}<br/>
+      card_exp: {{ user.userinfo.payment_method.billing_credit_card.exp }}<br/>
       <a href="{% url 'logout' %}">logout</a>
     {% else %}
       <a href="{% url 'login' %}">login</a>
