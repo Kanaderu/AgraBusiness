@@ -4,13 +4,13 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
 
+# Define User Admin
 class UserInline(admin.StackedInline):
     model = UserInfo
     can_delete = False
     verbose_name_plural = 'UserInfo'
 
 
-# Define a new User admin
 class UserAdmin(BaseUserAdmin):
     inlines = (UserInline,)
 
@@ -20,6 +20,7 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 
+# Define PaymentMethod Admin
 class PaymentMethodAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['billing_address_line1',
@@ -35,6 +36,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
 admin.site.register(PaymentMethod, PaymentMethodAdmin)
 
 
+# Define CreditCard Admin
 class CreditCardAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name',
@@ -47,6 +49,7 @@ class CreditCardAdmin(admin.ModelAdmin):
 admin.site.register(CreditCard, CreditCardAdmin)
 
 
+# Define BankAccount Admin
 class BankAccountAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['first_name',
