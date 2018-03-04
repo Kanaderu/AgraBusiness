@@ -4,7 +4,6 @@
 
 {% block content %}
   <h2>Edit User</h2>
-    {% if user.is_authenticated %}
     <ul class="messages">
       {% for message in messages %}
       <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -19,8 +18,4 @@
       {{ pmethod_form.as_p }}
       <button type="submit">Save changes</button>
     </form>
-      <a href="{% url 'logout' %}">logout</a>
-    {% else %}
-      <a href="{% url 'login' %}">login</a>
-    {% endif %}
 {% endblock %}
