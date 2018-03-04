@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Django Simple Login{% endblock %}</title>
+  <title>{% block title %}ArgraBusiness{% endblock %}</title>
 </head>
 <body>
   <header>
-    <h1>Django Simple Login</h1>
+    <h1>AgraBusiness</h1>
     {% if user.is_authenticated %}
       Hi {{ user.username }}!<br/>
       Last Login: {{ user.last_login }}<br/>
@@ -18,11 +18,11 @@
       billing_line2: {{ user.userinfo.payment_method.billing_address_line2 }}<br/>
       card_number: {{ user.userinfo.payment_method.billing_credit_card.number }}<br/>
       card_exp: {{ user.userinfo.payment_method.billing_credit_card.exp }}<br/>
-      <a href="{% url 'logout' %}">logout</a>
-      <a href="{% url 'user' %}">edit user</a>
+      <a href="{% url 'logout' %}">Logout</a>
+      <a href="{% url 'user' %}">Edit Account</a>
     {% else %}
-      <a href="{% url 'login' %}">login</a>
-      <a href="{% url 'register' %}">register</a>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
     {% endif %}
   </header>
   <hr>

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 
@@ -26,8 +26,8 @@ class BankAccount(models.Model):
 
 class PaymentMethod(models.Model):
     billing_address_line1 = models.CharField(max_length=256, help_text="Billing Address Line 1")
-    billing_address_line2 = models.CharField(max_length=256, help_text="Billing Address Line 2")
-    billing_zip_code = models.IntegerField(help_text="Billing Address Zip Code")
+    billing_address_line2 = models.CharField(max_length=256, help_text="Billing Address Line 2", blank=True)
+    billing_zip_code = models.IntegerField(default=0, help_text="Billing Address Zip Code")
     billing_state = models.CharField(max_length=2, help_text="Billing Address State")
     billing_city = models.CharField(max_length=256, help_text="Billing Address City")
     billing_credit_card = models.ForeignKey('CreditCard', on_delete=models.SET_NULL, default=None, null=True, blank=True)
@@ -46,19 +46,19 @@ class UserInfo(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=1, choices=USER_TYPE, default='c', help_text="User Account Type")
-    payment_method = models.OneToOneField(PaymentMethod, default=None, null=True, on_delete=models.CASCADE, blank=True)
+    payment_method = models.OneToOneField(PaymentMethod, default=None, null=True, on_delete=models.SET_NULL, blank=True)
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_info(sender, instance, created, **kwargs):
     if created:
-        UserInfo.objects.create(user=instance)
+        pMethod = PaymentMethod.objects.create()
+        UserInfo.objects.create(user=instance, payment_method=pMethod)
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
+def save_user_info(sender, instance, **kwargs):
     instance.userinfo.save()
-
