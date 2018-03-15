@@ -36,6 +36,9 @@ class PaymentMethod(models.Model):
     def __str__(self):
         return self.billing_address_line1
 
+    def save(self, *args, **kwargs):
+        self.billing_state = self.billing_state.upper()
+        return super(PaymentMethod, self).save(*args, **kwargs)
 
 class UserInfo(models.Model):
     USER_TYPE = (

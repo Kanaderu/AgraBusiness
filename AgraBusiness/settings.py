@@ -122,3 +122,4 @@ STATIC_URL = '/static/'
 
 # set login redirection url
 LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
