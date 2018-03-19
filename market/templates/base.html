@@ -68,6 +68,12 @@
             card_ccv: {{ cc.ccv }}<br/>
             card_exp: {{ cc.exp }}<br/>
           {% endfor %}
+          {% for ba in user.userinfo.payment_method.bankaccount_set.all %}
+            bank_first_name: {{ ba.first_name }}<br/>
+            bank_last_name: {{ ba.last_name }}<br/>
+            bank_routing_number: {{ ba.routing_number }}<br/>
+            bank_account_number: {{ ba.account_number }}<br/>
+          {% endfor %}
         {% endif %}
     </div>
       {% block content %}

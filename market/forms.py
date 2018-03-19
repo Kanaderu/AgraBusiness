@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserInfo, PaymentMethod, CreditCard
+from .models import UserInfo, PaymentMethod, CreditCard, BankAccount
 
 
 # Edit User Account Forms
@@ -39,4 +39,11 @@ class CreditCardForm(forms.ModelForm):
         fields = ('name', 'number', 'ccv', 'exp')
 
 
+class BankAccountForm(forms.ModelForm):
+    class Meta:
+        model = BankAccount
+        fields = ('first_name', 'last_name', 'routing_number', 'account_number')
+
+
 CreditCardFormSet = forms.inlineformset_factory(PaymentMethod, CreditCard, form=CreditCardForm, extra=1)
+BankAccountFormSet = forms.inlineformset_factory(PaymentMethod, BankAccount, form=BankAccountForm, extra=1)

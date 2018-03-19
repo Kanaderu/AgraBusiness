@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from .forms import DjangoUserForm, UserInfoForm, RegisterForm, PaymentMethodForm, CreditCardFormSet
+from .forms import DjangoUserForm, UserInfoForm, RegisterForm, PaymentMethodForm, CreditCardFormSet, BankAccountFormSet
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
@@ -86,6 +86,27 @@ def addCreditCardForm(request):
     else:
         pmethod_form = pform_method(instance=request.user.userinfo.payment_method)
         form = CreditCardFormSet(instance=request.user.userinfo.payment_method)
+
+    return render(request, template_name, {
+        "pmethod_form": pmethod_form,
+        "form": form,
+    })
+
+
+def addBankAccountForm(request):
+    pform_method = PaymentMethodForm
+    template_name = 'bankaccount_form.html'
+
+    if request.POST:
+        pmethod_form = pform_method(request.POST, instance=request.user.userinfo.payment_method)
+        form = BankAccountFormSet(request.POST, instance=request.user.userinfo.payment_method)
+        if form.is_valid() and pmethod_form.is_valid():
+            pmethod_form.save()
+            form.save()
+            return redirect('home')
+    else:
+        pmethod_form = pform_method(instance=request.user.userinfo.payment_method)
+        form = BankAccountFormSet(instance=request.user.userinfo.payment_method)
 
     return render(request, template_name, {
         "pmethod_form": pmethod_form,
