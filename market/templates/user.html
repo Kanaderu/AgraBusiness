@@ -3,6 +3,7 @@
 {% block title %}Edit Account{% endblock %}
 
 {% block content %}
+  <h3><a href="{% url 'bankaccount' %}">Edit Bank Accounts</a> | <a href="{% url 'cc' %}">Edit Credit Cards</a></h3>
   <h2>Edit User</h2>
     <ul class="messages">
       {% for message in messages %}
