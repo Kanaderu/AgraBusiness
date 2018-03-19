@@ -28,8 +28,6 @@ class PaymentMethodAdmin(admin.ModelAdmin):
                            'billing_zip_code',
                            'billing_state',
                            'billing_city']}),
-        ('Credit Card', {'fields': ['billing_credit_card']}),
-        ('Bank Account', {'fields': ['billing_bank_account']})
     ]
 
 
@@ -39,7 +37,8 @@ admin.site.register(PaymentMethod, PaymentMethodAdmin)
 # Define CreditCard Admin
 class CreditCardAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['name',
+        (None, {'fields': ['payment_method',
+                           'name',
                            'number',
                            'ccv',
                            'exp']})

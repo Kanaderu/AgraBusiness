@@ -59,11 +59,15 @@
           user_type: {{ user.userinfo.user_type }}<br/>
           billing_line1: {{ user.userinfo.payment_method.billing_address_line1 }}<br/>
           billing_line2: {{ user.userinfo.payment_method.billing_address_line2 }}<br/>
-          billing_line2: {{ user.userinfo.payment_method.billing_zip_code }}<br/>
-          billing_line2: {{ user.userinfo.payment_method.billing_state }}<br/>
-          billing_line2: {{ user.userinfo.payment_method.billing_city }}<br/>
-          card_number: {{ user.userinfo.payment_method.billing_credit_card.number }}<br/>
-          card_exp: {{ user.userinfo.payment_method.billing_credit_card.exp }}<br/>
+          billing_zip_code: {{ user.userinfo.payment_method.billing_zip_code }}<br/>
+          billing_state: {{ user.userinfo.payment_method.billing_state }}<br/>
+          billing_city: {{ user.userinfo.payment_method.billing_city }}<br/>
+          {% for cc in user.userinfo.payment_method.creditcard_set.all %}
+            card_name: {{ cc.name }}<br/>
+            card_number: {{ cc.number }}<br/>
+            card_ccv: {{ cc.ccv }}<br/>
+            card_exp: {{ cc.exp }}<br/>
+          {% endfor %}
         {% endif %}
     </div>
       {% block content %}

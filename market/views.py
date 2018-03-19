@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from .forms import DjangoUserForm, UserInfoForm, RegisterForm, PaymentMethodForm
+from .forms import DjangoUserForm, UserInfoForm, RegisterForm, PaymentMethodForm, CreditCardFormSet
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
@@ -9,7 +9,8 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
+from .models import CreditCard, PaymentMethod
 
 
 # Edit User Views
@@ -29,7 +30,7 @@ class EditUserView(View):
         return render(request, self.template_name, {
             'user_form': user_form,
             'userinfo_form': userinfo_form,
-            'pmethod_form': pmethod_form
+            'pmethod_form': pmethod_form,
         })
 
     @method_decorator(decorators)
@@ -52,21 +53,41 @@ class EditUserView(View):
         })
 
 
-class RegisterView(FormView):
-    form_class = RegisterForm
-    template_name = 'register.html'
-    success_url = reverse_lazy('home')
+# User Registration Views	+
+def register(request):
+    if request.method == 'POST':
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+            user = register_form.save()
+            user.refresh_from_db()
+            # add userinfo data
+            user.userinfo.user_type = register_form.cleaned_data.get('user_type')
+            user.save()
+            raw_password = register_form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        register_form = RegisterForm()
+    return render(request, 'register.html', {'register_form': register_form})
 
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {'register_form': self.form_class})
 
-    def form_valid(self, form):
-        register_form = self.form_class(self.request.POST)
-        user = register_form.save()
-        user.refresh_from_db()
-        user.userinfo.user_type = register_form.cleaned_data.get('user_type')
-        user.save()
-        raw_password = register_form.cleaned_data.get('password1')
-        user = authenticate(username=user.username, password=raw_password)
-        login(self.request, user)
-        return super(RegisterView, self).form_valid(form)
+def addCreditCardForm(request):
+    pform_method = PaymentMethodForm
+    template_name = 'creditcard_form.html'
+
+    if request.POST:
+        pmethod_form = pform_method(request.POST, instance=request.user.userinfo.payment_method)
+        form = CreditCardFormSet(request.POST, instance=request.user.userinfo.payment_method)
+        if form.is_valid() and pmethod_form.is_valid():
+            pmethod_form.save()
+            form.save()
+            return redirect('home')
+    else:
+        pmethod_form = pform_method(instance=request.user.userinfo.payment_method)
+        form = CreditCardFormSet(instance=request.user.userinfo.payment_method)
+
+    return render(request, template_name, {
+        "pmethod_form": pmethod_form,
+        "form": form,
+    })
