@@ -25,7 +25,7 @@ SECRET_KEY = '0o*_o_*^0b$$5ryj)wti19&uo(o@%t@0lg=m+k)kwk5^tu+jce'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['agrabusiness.tk', 'localhost', '127.0.0.1']
 
 
 # Application definition
