@@ -27,7 +27,7 @@
                 <a class="bar-item right ">Last Login: {{ user.last_login }}</a>
                 {% else %}
                 <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in margin-right"></i>Login</a>
-                <a href="{% url 'register' %}" class="bar-item button hover-white">Register</a>
+                <a href="{% url 'register' %}" class="bar-item button hover-white"><i class="fa fa-user-plus margin-right"></i>Register</a>
                 {% endif %}
                 <a href="#" class="bar-item button right hover-blue" title="Search"><i class="fa fa-search"></i></a>
             </div>
