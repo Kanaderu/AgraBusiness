@@ -4,6 +4,7 @@
 {% block page_name %}Produce List{% endblock %}
 {% block content %}
 
+{% if object_list %}
 <table>
     <tr>
         <th>Name</th>
@@ -12,6 +13,7 @@
         <th>Expiration Date</th>
         <th>Supplier</th>
     </tr>
+{% endif %}
 {% for produce in object_list %}
     <tr>
         <td>{{ produce.produce_name }}</td>
@@ -23,5 +25,7 @@
 {% empty %}
     <h3>There are no Produce Items to show.</h3>
 {% endfor %}
+{% if object_list %}
 </table>
+{% endif %}
 {% endblock %}
