@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}AgraBusiness{% endblock %}
+{% block page_name %}Produce List{% endblock %}
+{% block content %}
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Expiration Date</th>
+        <th>Supplier</th>
+    </tr>
+{% for produce in object_list %}
+    <tr>
+        <td>{{ produce.produce_name }}</td>
+        <td>{{ produce.description|truncatewords:10 }}</td>
+        <td>{{ produce.price }}</td>
+        <td>{{ produce.expiration }}</td>
+        <td>{{ produce.supplier }}</td>
+    </tr>
+{% empty %}
+    <h3>There are no Produce Items to show.</h3>
+{% endfor %}
+</table>
+{% endblock %}

@@ -9,9 +9,9 @@
         <form action="" method="post">{% csrf_token %}
             {{ pmethod_form.as_p }}
             <table class="table">
-                {{ form.management_form }}
+                {{ bankaccount_formset.management_form }}
 
-                {% for form in form.forms %}
+                {% for form in bankaccount_formset.forms %}
                     {% if forloop.first %}
                         <thead>
                         <tr>

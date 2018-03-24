@@ -69,6 +69,14 @@ body, html {
     }
 }
 
+
+/* font sizes */
+.large {
+    font-size:18px!important
+}
+.xlarge {
+    font-size:24px!important
+}
 .jumbo {
     font-size: 64px!important
 }
@@ -114,6 +122,13 @@ body, html {
 }
 .margin-right {
     margin-right: 16px!important
+}
+.container,.panel {
+    padding:0.01em 16px
+}
+.panel {
+    margin-top:16px;
+    margin-bottom:16px
 }
 
 /* text justification */
@@ -220,7 +235,52 @@ body, html {
     color: #000!important;
     background-color: #fff!important
 }
+
+/* footer */
+.theme-l5 {
+    color:#000 !important; background-color:#f0f0f0 !important
+}
+.theme-d1 {
+    color:#fff !important; background-color:#000000 !important
+}
+.bottombar {
+    border-bottom:6px solid #ccc!important
+}
+
+/*** colors ***/
+
+/* teal */
+.border-teal,.hover-border-teal:hover {
+    border-color:#009688!important
+}
+.text-teal,.hover-text-teal:hover {
+    color:#009688!important
+}
 .teal,.hover-teal:hover {
     color: #fff!important;
     background-color: #009688!important
+}
+
+/* blue */
+.border-blue,.hover-border-blue:hover {
+    border-color:#2196F3!important
+}
+.text-blue,.hover-text-blue:hover {
+    color:#2196F3!important
+}
+.blue,.hover-blue:hover {
+    color: #fff!important;
+    background-color: #2196F3!important
+}
+
+/* orange */
+.border-blue,.hover-border-blue:hover {
+    border-color:#FF5722!important
+}
+.text-blue,.hover-text-blue:hover {
+    color:#FF5722!important
+}
+.blue,.hover-blue:hover {
+    color: #fff!important;
+    background-color: #FF5722!important
 }
