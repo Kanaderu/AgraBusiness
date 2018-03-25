@@ -6,11 +6,7 @@
     <title>{% block title %}ArgraBusiness{% endblock %}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {% comment %}
-    {# This will be more stand-alone but has missing icons (since it's the free version of fa #}
     <link rel="stylesheet" href="{% static 'css/fontawesome-all.css' %}">
-    {% endcomment %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 </head>
 
@@ -23,10 +19,10 @@
                 <a href="{% url 'produce-list' %}" class="bar-item button hover-white"><i class="fa fa-leaf margin-right"></i>Produce List</a>
                 {% if user.is_authenticated %}
                 <a href="{% url 'user' %}" class="bar-item button hover-white"><i class="fa fa-user margin-right"></i>Edit Account</a>
-                <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out margin-right"></i>Logout</a>
+                <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
                 <a class="bar-item right ">Last Login: {{ user.last_login }}</a>
                 {% else %}
-                <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in margin-right"></i>Login</a>
+                <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in-alt margin-right"></i>Login</a>
                 <a href="{% url 'register' %}" class="bar-item button hover-white"><i class="fa fa-user-plus margin-right"></i>Register</a>
                 {% endif %}
                 <a href="#" class="bar-item button right hover-blue" title="Search"><i class="fa fa-search"></i></a>
@@ -37,9 +33,9 @@
                 {% if user.is_authenticated %}
                 <a href="{% url 'home' %}" class="bar-item button blue"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
                 <a href="{% url 'user' %}" class="bar-item button"><i class="fa fa-user margin-right"></i>Edit Account</a>
-                <a href="{% url 'logout' %}" class="bar-item button"><i class="fa fa-sign-out margin-right"></i>Logout</a>
+                <a href="{% url 'logout' %}" class="bar-item button"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
                 {% else %}
-                <a href="{% url 'login' %}" class="bar-item button"><i class="fa fa-sign-in margin-right"></i>Login</a>
+                <a href="{% url 'login' %}" class="bar-item button"><i class="fa fa-sign-in-alt margin-right"></i>Login</a>
                 <a href="{% url 'register' %}" class="bar-item button">Register</a>
                 {% endif %}
             </div>
@@ -77,9 +73,11 @@
         {% endfor %}
         {% endif %}
         </div>
+        <div class="margin-left">
         <h2 class="animate-top">{% block page_name %}Base{% endblock %}</h2>
         {% block content %}
         {% endblock %}
+        </div>
     </main>
 
     <!-- Contact Container -->
@@ -104,19 +102,19 @@
         <div class="container theme-l5 margin-top" id="contact">
             <span class="xlarge border-blue bottombar">Contact Us</span>
             <h3>Address</h3>
-            <p>Buy and sell local farmer crops at Agrabusiness! Contact Us to learn more!</p>
-            <p><i class="fa fa-map-marker text-blue xlarge"></i>  300 College Park</p>
+            <p>Buy and sell local farmer crops at Agrabusiness!<br/>Contact Us to learn more!</p>
+            <p><i class="fa fa-map-marker-alt text-blue xlarge"></i>  300 College Park</p>
             <p><i class="fa fa-phone text-blue xlarge"></i>  937-229-1000</p>
-            <p><i class="fa fa-envelope-o text-blue xlarge"></i>  contact@agrabusiness.tk</p>
+            <p><i class="fa fa-envelope text-blue xlarge"></i>  contact@agrabusiness.tk</p>
         </div>
 
         <div class="container theme-d1 center">
             <h4>Follow Us</h4>
-            <a class="button large blue" href="javascript:void(0)" title="Facebook"><i class="fa fa-facebook"></i></a>
-            <a class="button large blue" href="javascript:void(0)" title="Twitter"><i class="fa fa-twitter"></i></a>
-            <a class="button large blue" href="javascript:void(0)" title="Google +"><i class="fa fa-google-plus"></i></a>
-            <a class="button large blue" href="javascript:void(0)" title="Google +"><i class="fa fa-instagram"></i></a>
-            <a class="button large blue hide-small" href="javascript:void(0)" title="Linkedin"><i class="fa fa-linkedin"></i></a>
+            <a class="button large blue" href="javascript:void(0)" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a class="button large blue" href="javascript:void(0)" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a class="button large blue" href="javascript:void(0)" title="Google +"><i class="fab fa-google-plus"></i></a>
+            <a class="button large blue" href="javascript:void(0)" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="button large blue hide-small" href="javascript:void(0)" title="Linkedin"><i class="fab fa-linkedin"></i></a>
             <p>Powered by <a href="javascript:void(0)" target="_blank">DJANGO</a></p>
         </div>
     </footer>

@@ -28,8 +28,10 @@ body, html {
 
 .header-img {
     width: 100%;
-    min-height: 480px;
+    height: 300px;
+    /*min-height: 480px;
     max-height:600px;
+    max-height:480px;*/
 }
 
 .black-background {color:#fff !important; background-color:#000000 !important}
