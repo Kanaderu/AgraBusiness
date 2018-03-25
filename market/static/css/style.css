@@ -276,13 +276,13 @@ body, html {
 }
 
 /* orange */
-.border-blue,.hover-border-blue:hover {
+.border-orange,.hover-border-orange:hover {
     border-color:#FF5722!important
 }
-.text-blue,.hover-text-blue:hover {
+.text-orange,.hover-text-orange:hover {
     color:#FF5722!important
 }
-.blue,.hover-blue:hover {
+.orange,.hover-orange:hover {
     color: #fff!important;
     background-color: #FF5722!important
 }

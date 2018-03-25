@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{% endblock %}
+{% block title %}Bank Account Information{% endblock %}
+{% block page_name %}Bank Account Information{% endblock %}
 {% block content %}
-    <h2>Payment Information</h2>
     <hr>
-    <div class="col-md-4">
-        <form action="" method="post">{% csrf_token %}
+    <div class="col-md-5">
+        <form method="post">
+            {% csrf_token %}
             {{ pmethod_form.as_p }}
             <table class="table">
                 {{ bankaccount_formset.management_form }}
@@ -37,7 +38,7 @@
                     </tr>
                 {% endfor %}
             </table>
-            <input type="submit" value="Save"/> <a href="{% url 'home' %}">back to home</a>
+            <input type="submit" value="Save" class="btn btn-default"/> <a href="{% url 'home' %}">back to home</a>
         </form>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

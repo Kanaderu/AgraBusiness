@@ -1,22 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Account{% endblock %}
+{% block title %}User Account{% endblock %}
+{% block page_name %}User Account{% endblock %}
 
 {% block content %}
-  <h3><a href="{% url 'bankaccount' %}">Edit Bank Accounts</a> | <a href="{% url 'cc' %}">Edit Credit Cards</a></h3>
-  <h2>Edit User</h2>
+<h3><a href="{% url 'bankaccount' %}">Edit Bank Accounts</a> | <a href="{% url 'cc' %}">Edit Credit Cards</a></h3>
     <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
     </ul>
 
+    <div class="col-md-4">
     <form method="post">
-      {% csrf_token %}
-      {{ user_form.as_p }}
-      {{ userinfo_form.as_p }}
-      <h3>Payment Information</h3>
-      {{ pmethod_form.as_p }}
-      <button type="submit">Save changes</button>
+        {% csrf_token %}
+        {#{{ user_form.as_p }}#}
+        {% for field in user_form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </p>
+        {% endfor %}
+        {#{{ userinfo_form.as_p }}#}
+        <h3>Payment Information</h3>
+        {{ pmethod_form.as_p }}
+        <button type="submit" class="btn btn-default">Save changes</button>
     </form>
+    </div>
 {% endblock %}
