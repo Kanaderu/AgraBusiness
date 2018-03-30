@@ -4,7 +4,6 @@
 {% block title %}Credit Card Information{% endblock %}
 {% block page_name %}Credit Card Information{% endblock %}
 {% block content %}
-    <hr>
     <div class="col-md-5">
         <form method="post">
             {% csrf_token %}
@@ -38,7 +37,7 @@
                     </tr>
                 {% endfor %}
             </table>
-            <input type="submit" value="Save" class="btn btn-default"/> <a href="{% url 'home' %}">back to home</a>
+            <button type="submit" value="Save" class="btn btn-primary"/> <a href="{% url 'home' %}">back to home</a>
         </form>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

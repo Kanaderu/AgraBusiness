@@ -11,7 +11,7 @@
 </head>
 
 <body >
-    <header>
+    <nav>
         <!-- Navbar on large screens -->
         <div class="top ">
             <div class="bar black-background left-align large-nav">
@@ -25,7 +25,8 @@
                 <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in-alt margin-right"></i>Login</a>
                 <a href="{% url 'register' %}" class="bar-item button hover-white"><i class="fa fa-user-plus margin-right"></i>Register</a>
                 {% endif %}
-                <a href="#" class="bar-item button right hover-blue" title="Search"><i class="fa fa-search"></i></a>
+                <a href="#" class="bar-item button right hover-blue"><i class="fa fa-search"></i>&nbsp;</a>
+                <a onclick="document.getElementById('id01').style.display='block'" class="bar-item button right hover-blue"><i class="far fa-address-card"></i>&nbsp;</a>
             </div>
 
             <!-- Navbar on small screens -->
@@ -40,13 +41,44 @@
                 {% endif %}
             </div>
         </div>
-    </header>
+    </nav>
 
     <main>
         <div class="display-container animate-opacity">
-        <img src="{% block header_img %}{% static 'header.jpg' %}{% endblock %}" class="header-img">
+            <img src="{% block header_img %}{% static 'header.jpg' %}{% endblock %}" class="header-img">
+            <div class="container display-bottomleft margin-bottom">
+                <!--<button onclick="document.getElementById('id01').style.display='block'" class="button xlarge theme hover-blue" title="Go To W3.CSS">LEARN W3.CSS</button>-->
+                <h1 style="display:inline-block;padding: 8px 16px;font-weight: bold;" class="animate-top xxlarge theme-d1">{% block header-name %}AgraBusiness{% endblock %}</h1>
+            </div>
+        </div>
 
-        <h1 class="jumbo animate-top">AgraBusiness</h1>
+        <!-- Modal -->
+        <div id="id01" class="modal">
+              <div class="modal-content card-4 animate-top">
+                    <header class="container blue display-container">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="button blue display-topright"><i class="fas fa-times"></i></span>
+                        <h4 class="margin-top">Contact Us!</h4>
+                    </header>
+                    <div class="container">
+                        <p class="margin-top">
+                            AgraBusiness is a software engineering class project.<br/>
+                            The University of Dayton Spring class 2018, CPS 592.<br/>
+                        </p>
+                    </div>
+                    <footer class="container blue">
+                        <p class="margin-top text-warning">© 2018 AgraBusiness</p>
+                    </footer>
+              </div>
+        </div>
+        <div class="bar elegant-color-dark large-nav">&nbsp</div>
+        <span class="d-block p-2 bg-dark text-white"></span>
+        <div class="margin-left">
+            <h4 style="font-weight: bold;" class="xlarge margin-top">{% block page_name %}Base{% endblock %}</h4>
+            <hr/>
+            {% block content %}
+            {% endblock %}
+        </div>
+
         {% if user.is_authenticated %}
         Hi {{ user.username }}!<br/>
         Last Login: {{ user.last_login }}<br/>
@@ -72,12 +104,6 @@
             bank_account_number: {{ ba.account_number }}<br/>
         {% endfor %}
         {% endif %}
-        </div>
-        <div class="margin-left">
-        <h2 class="animate-top">{% block page_name %}Base{% endblock %}</h2>
-        {% block content %}
-        {% endblock %}
-        </div>
     </main>
 
     <!--Footer-->
@@ -91,7 +117,6 @@
                 <div class="col-md-4">
                     <h5 class="xlarge border-blue bottombar text-uppercase mb-4 mt-3 font-weight-bold">Contact Us</h5>
                     <p>
-                        <h4>Address</h4>
                         <p>Buy and sell local farmer crops at Agrabusiness!<br/>Contact Us to learn more!</p>
                         <p><i class="fa fa-map-marker-alt text-blue xlarge"></i>  300 College Park</p>
                         <p><i class="fa fa-phone text-blue xlarge"></i>  937-229-1000</p>
@@ -222,8 +247,7 @@
 
         <!--Copyright-->
         <div class="footer-copyright py-3 text-center">
-            © 2018
-            <a href="{% url 'home' %}"> AgraBusiness</a>
+            © 2018 <a href="{% url 'home' %}"> AgraBusiness</a>
         </div>
         <!--/.Copyright-->
 

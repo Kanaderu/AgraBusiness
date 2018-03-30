@@ -31,13 +31,13 @@ class RegisterForm(UserCreationForm):
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label=_("Password confirmation"),
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-                                help_text=_("Enter the same password as above, for verification."))
+                                help_text=_("Enter the same password as above for verification."))
 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'user_type', 'username', 'password1', 'password2', )
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'autofocus': 'None'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
