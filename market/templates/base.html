@@ -65,12 +65,12 @@
                     </header>
                     <div class="container">
                         <p class="margin-top">
+                            The University of Dayton Spring 2018 Semester, CPS 592<br/>
                             AgraBusiness is a software engineering class project.<br/>
-                            The University of Dayton Spring class 2018, CPS 592.<br/>
                         </p>
                     </div>
                     <footer class="container blue">
-                        <p class="margin-top text-warning">© 2018 AgraBusiness</p>
+                        <p class="margin-top text-warning">© {% now "Y" %} AgraBusiness</p>
                     </footer>
               </div>
         </div>
@@ -251,7 +251,7 @@
 
         <!--Copyright-->
         <div class="footer-copyright py-3 text-center">
-            © 2018 <a href="{% url 'home' %}"> AgraBusiness</a>
+            © {% now "Y" %} <a href="{% url 'home' %}"> AgraBusiness</a>
         </div>
         <!--/.Copyright-->
 
