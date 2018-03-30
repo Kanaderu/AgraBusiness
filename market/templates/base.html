@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/fontawesome-all.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    {% block head-tag %}{% endblock %}
 </head>
 
 <body >
@@ -27,6 +28,9 @@
                 {% endif %}
                 <a href="#" class="bar-item button right hover-blue"><i class="fa fa-search"></i>&nbsp;</a>
                 <a onclick="document.getElementById('id01').style.display='block'" class="bar-item button right hover-blue"><i class="far fa-address-card"></i>&nbsp;</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'cart' %}" class="bar-item button right hover-white"><i class="fas fa-shopping-cart"></i>&nbsp;</a>
+                {% endif %}
             </div>
 
             <!-- Navbar on small screens -->

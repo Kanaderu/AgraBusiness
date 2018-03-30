@@ -16,7 +16,7 @@
 {% endif %}
 {% for produce in object_list %}
     <tr>
-        <td>{{ produce.produce_name }}</td>
+        <td><a href="{% url 'produce-item' pk=produce.id %}">{{ produce.produce_name }}</a></td>
         <td>{{ produce.description|truncatewords:10 }}</td>
         <td>{{ produce.price }}</td>
         <td>{{ produce.expiration }}</td>

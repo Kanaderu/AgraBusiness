@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}AgraBusiness{% endblock %}
+{% block page_name %}Produce Item{% endblock %}
+{% block content %}
+
+{% if object %}
+    {{ object.produce_name }}
+    {{ object.description }}
+    {{ object.price }}
+    {{ object.expiration }}
+{% endif %}
+
+{% endblock %}

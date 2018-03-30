@@ -13,7 +13,6 @@ class UserInfo(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cart = models.OneToOneField('Cart', on_delete=models.CASCADE, blank=True, null=True)
     user_type = models.CharField(max_length=1, choices=USER_TYPE, default='c', help_text="User Account Type")
     payment_method = models.OneToOneField('PaymentMethod', default=None, null=True, on_delete=models.SET_NULL, blank=True)
 
@@ -26,8 +25,8 @@ def create_user_info(sender, instance, created, **kwargs):
     # auto create associated models when creating userinfo
     if created:
         pMethod = PaymentMethod.objects.create()
-        cart = Cart.objects.create()
-        UserInfo.objects.create(user=instance, payment_method=pMethod, cart=cart)
+        UserInfo.objects.create(user=instance, payment_method=pMethod)
+        Cart.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
@@ -77,6 +76,7 @@ class BankAccount(models.Model):
 class Cart(models.Model):
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.subtotal + ' ' + self.total
@@ -90,6 +90,9 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField()
     unit_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+
+    def __init__(self):
+        self.subtotal = self.unit_cost * self.quantity
 
     def __str__(self):
         return self.unit_cost + ' ' + self.quantity + ' ' + self.subtotal

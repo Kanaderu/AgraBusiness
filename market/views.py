@@ -10,7 +10,9 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+from django.views.generic import DetailView
 from django.utils import timezone
 
 
@@ -155,7 +157,7 @@ class AddBankAccountView(View):
 
 
 # Produce Item View
-class ProduceItemView(ListView):
+class ProduceItemListView(ListView):
     model = ProduceItem
     template_name = 'produce_list.html'
 
@@ -163,3 +165,14 @@ class ProduceItemView(ListView):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
         return context
+
+
+class ProduceItemView(DetailView):
+    model = ProduceItem
+    template_name = 'produce_item.html'
+
+
+# Cart View
+class CartView(ListView):
+    model = Cart
+    template_name = 'cart.html'
