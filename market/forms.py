@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserInfo, PaymentMethod, CreditCard, BankAccount
+from .models import *
 from django.utils.translation import gettext as _
 
 
@@ -84,3 +84,28 @@ class BankAccountForm(forms.ModelForm):
 
 CreditCardFormSet = forms.inlineformset_factory(PaymentMethod, CreditCard, form=CreditCardForm, extra=1)
 BankAccountFormSet = forms.inlineformset_factory(PaymentMethod, BankAccount, form=BankAccountForm, extra=1)
+
+
+# Cart Forms
+'''
+class AddProduceItemToCart(forms.ModelForm):
+    class Meta:
+        model = CartItem
+        fields = {'quantity'}
+        widgets = {
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+'''
+
+
+class AddProduceItemToCart(forms.Form):
+    quantity = forms.IntegerField(label=_('quantity'),
+                                  widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    class Meta:
+        model = CartItem
+        #fields = {'quantity'}
+        #widgets = {
+        #    'quantity' : forms.NumberInput(attrs={'class': 'form-control'}),
+        #}
+    #quantity = forms.IntegerField(label=_('quantity'),
+    #                              widget=forms.NumberInput(attrs={'class': 'form-control'}))

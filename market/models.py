@@ -74,34 +74,30 @@ class BankAccount(models.Model):
 
 # Cart Models
 class Cart(models.Model):
+    tax = models.DecimalField(default=0, max_digits=25, decimal_places=2)
+    tax_rate = models.DecimalField(default=7.25, max_digits=3, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.subtotal + ' ' + self.total
+        return str(self.user.username) + ' ' + str(self.total)
 
 
 class CartItem(models.Model):
-    #produce_id = models.PositiveIntegerField()
-    #produce_id = models.ForeignKey('ProduceItem', on_delete=models.CASCADE, to_field='produce_id')
-    #produce_id = models.ForeignKey('ProduceItem', on_delete=models.CASCADE, to_field='id')
+    # multiple cart items can point to a single produce item where each cart item is associated with a cart/user
+    produce_item = models.ForeignKey('ProduceItem', on_delete=models.CASCADE, default=None, null=True, blank=True)
     cart = models.ForeignKey('Cart', on_delete=models.SET_NULL, default=None, null=True, blank=True)
     quantity = models.PositiveIntegerField()
     unit_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
 
-    def __init__(self):
-        self.subtotal = self.unit_cost * self.quantity
-
     def __str__(self):
-        return self.unit_cost + ' ' + self.quantity + ' ' + self.subtotal
+        return str(self.cart) + str(self.unit_cost) + ' ' + str(self.quantity) + ' ' + str(self.subtotal)
 
 
 # Inventory Produce
 class ProduceItem(models.Model):
-    #produce_id = models.PositiveIntegerField(unique=True)
-    #produce_id = models.AutoField(primary_key=True)
     produce_name = models.CharField(max_length=256)
     #produce_type
     expiration = models.DateField()
@@ -111,7 +107,7 @@ class ProduceItem(models.Model):
     supplier = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.id) + ' ' + self.produce_name + ' ' + self.description + ' ' + str(self.price)
+        return str(self.id) + ' ' + self.produce_name + ' ' + str(self.price)
 
 
 class ProduceGroup(models.Model):

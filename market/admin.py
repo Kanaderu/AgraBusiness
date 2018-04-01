@@ -108,3 +108,43 @@ class ProduceItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProduceItem, ProduceItemAdmin)
+
+
+# Define Cart Admin
+class CartAdmin(admin.ModelAdmin):
+    # elements to show on list
+    list_display = ('subtotal',
+                    'total',
+                    'user',)
+
+    # editable fields
+    fieldsets = [
+        (None, {'fields': ['subtotal',
+                           'total',
+                           'user',]})
+    ]
+
+
+admin.site.register(Cart, CartAdmin)
+
+
+# Define CartItem Admin
+class CartItemAdmin(admin.ModelAdmin):
+    # elements to show on list
+    list_display = ('produce_item',
+                    'cart',
+                    'quantity',
+                    'unit_cost',
+                    'subtotal')
+
+    # editable fields
+    fieldsets = [
+        (None, {'fields': ['produce_item',
+                           'cart',
+                           'quantity',
+                           'unit_cost',
+                           'subtotal']})
+    ]
+
+
+admin.site.register(CartItem, CartItemAdmin)

@@ -12,8 +12,12 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, FormView
 from django.utils import timezone
+from django.views.generic.detail import SingleObjectMixin
+from decimal import Decimal
+from django.http import HttpResponse
+
 
 
 # Edit User View
@@ -167,9 +171,79 @@ class ProduceItemListView(ListView):
         return context
 
 
-class ProduceItemView(DetailView):
+# Detail view for produce item
+class ProduceItemDetailView(DetailView):
     model = ProduceItem
     template_name = 'produce_item.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProduceItemDetailView, self).get_context_data(**kwargs)
+        context['form'] = AddProduceItemToCart()
+        return context
+
+
+# POST/Form view for produce item adding to cart
+class ProduceItemFormView(SingleObjectMixin, FormView):
+    form_class = AddProduceItemToCart
+    model = ProduceItem
+    template_name = 'produce_item.html'
+
+    def post(self, request, *args, **kwargs):
+        addCart_form = self.form_class(self.request.POST)
+        if addCart_form.is_valid():
+            # retrieve quantity
+            quantity = addCart_form.cleaned_data.get('quantity')
+
+            # retrieve currently viewed produce item
+            self.object = self.get_object()
+
+            # update or create cart item
+            obj, created = CartItem.objects.update_or_create(
+                # filter with these unique values
+                cart__exact=request.user.cart, produce_item__exact=self.object,
+                # fields to update and their values
+                defaults={
+                    'produce_item': self.object,
+                    'cart': request.user.cart,
+                    'quantity': quantity,
+                    'unit_cost': self.object.price,
+                    'subtotal': self.object.price * quantity,   # compute subtotal
+                }
+            )
+
+            # get items in user's cart
+            cart_items = CartItem.objects.filter(cart=request.user.cart)
+
+            # compute cart subtotal
+            sum = Decimal(0.00)
+            for cart_item in cart_items:
+                sum += cart_item.unit_cost * cart_item.quantity
+
+            # update cart
+            cart = request.user.cart
+            cart.subtotal = sum
+            cart.tax = cart.subtotal * cart.tax_rate / Decimal(100.00)
+            cart.total = cart.tax + cart.subtotal
+            cart.save()
+
+        return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('produce-list')
+        #return reverse_lazy('produce-item', kwargs={'pk': self.object.pk})
+
+
+# combine form view with detail view (https://docs.djangoproject.com/en/2.0/topics/class-based-views/mixins/)
+class ProduceItemView(View):
+    template_name = 'produce_item.html'
+
+    def get(self, request, *args, **kwargs):
+        view = ProduceItemDetailView.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = ProduceItemFormView.as_view()
+        return view(request, *args, **kwargs)
 
 
 # Cart View
