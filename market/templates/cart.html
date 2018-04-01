@@ -25,9 +25,9 @@
                                     <div class="row">
                                         <div class="col-md-5 product-name">
                                             <div class="product-name">
-                                                <a href="{% url 'produce-item' pk=cart_item.produce_item.id %}">{{ cart_item.produce_item.produce_name }}</a>
+                                                <a href="{% url 'produce-item' pk=cart_item.produce_item.id %}">{{ cart_item.produce_item.produce_name|title }}</a>
                                                 <div class="product-info">
-                                                    <div>Description: <span class="value">{{ cart_item.produce_item.description|truncatewords:10 }}</span></div>
+                                                    <div>Description: <span class="value">{{ cart_item.produce_item.description|capfirst|truncatewords:10 }}</span></div>
                                                     <div>Expiration: <span class="value">{{ cart_item.produce_item.expiration }}</span></div>
                                                     <div>Unit Cost: <span class="value">${{ cart_item.unit_cost|intcomma }}</span></div>
                                                 </div>
@@ -36,6 +36,10 @@
                                         <div class="col-md-4 quantity">
                                             <label for="quantity">Quantity:</label>
                                             <input id="quantity" type="number" value ="{{ cart_item.quantity }}" class="form-control quantity-input">
+                                            <form action="{% url 'cartitem-delete' pk=cart_item.id %}" method="post">
+                                                {% csrf_token %}
+                                                <button class="btn btn-danger">Delete</button>
+                                            </form>
                                         </div>
                                         <div class="col-md-3 quantity">
                                             <label for="quantity">Subtotal:</label>
@@ -46,18 +50,24 @@
                             </div>
                         </div>
                     </div>
+                    {% empty %}
+                    CART EMPTY!
                     {% endfor %}
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
                 <div class="summary">
                     <h3>Summary</h3>
+                    <div class="summary-item"><span class="text">Produce Items</span><span class="price">{{ user.cart.cartitem_set.all|length }}</span></div>
                     <div class="summary-item"><span class="text">Subtotal</span><span class="price">${{ user.cart.subtotal|intcomma }}</span></div>
                     {#<div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>#}
                     <div class="summary-item"><span class="text">Tax</span><span class="price">({{ user.cart.tax_rate }}%) ${{ user.cart.tax|intcomma }}</span></div>
                     <div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
                     <div class="summary-item"><span class="text">Total</span><span class="price">${{ user.cart.total|intcomma }}</span></div>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Checkout</button>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Checkout</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+from django.http import Http404
 from .forms import *
 from .models import *
 from django.contrib import messages
@@ -13,11 +14,30 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
+from django.views.generic.edit import DeleteView
 from django.utils import timezone
 from django.views.generic.detail import SingleObjectMixin
 from decimal import Decimal
 from django.http import HttpResponse
 
+
+# function that updates a cart's details with its associated cart items
+def UpdateCartDetails(cart):
+    # get items in user's cart
+    cart_items = CartItem.objects.filter(cart=cart)
+
+    # compute cart subtotal
+    sum = Decimal(0.00)
+
+    for cart_item in cart_items:
+        sum += cart_item.unit_cost * cart_item.quantity
+
+    # update cart
+    cart = cart
+    cart.subtotal = sum
+    cart.tax = cart.subtotal * cart.tax_rate / Decimal(100.00)
+    cart.total = cart.tax + cart.subtotal
+    cart.save()
 
 
 # Edit User View
@@ -211,20 +231,7 @@ class ProduceItemFormView(SingleObjectMixin, FormView):
                 }
             )
 
-            # get items in user's cart
-            cart_items = CartItem.objects.filter(cart=request.user.cart)
-
-            # compute cart subtotal
-            sum = Decimal(0.00)
-            for cart_item in cart_items:
-                sum += cart_item.unit_cost * cart_item.quantity
-
-            # update cart
-            cart = request.user.cart
-            cart.subtotal = sum
-            cart.tax = cart.subtotal * cart.tax_rate / Decimal(100.00)
-            cart.total = cart.tax + cart.subtotal
-            cart.save()
+            UpdateCartDetails(request.user.cart)
 
         return super().post(request, *args, **kwargs)
 
@@ -247,6 +254,29 @@ class ProduceItemView(View):
 
 
 # Cart View
-class CartView(ListView):
+class CartView(View):
+    #model = Cart
+    template_name = 'cart.html'
+
+    def get(self, request, *args, **kwargs):
+        UpdateCartDetails(request.user.cart)
+        view = CartListView.as_view()
+        return view(request, *args, **kwargs)
+
+'''
+    def post(self, request, *args, **kwargs):
+        view = DeleteCartItemView.as_view()
+        return view(request, *args, **kwargs)
+'''
+
+
+class CartListView(ListView):
     model = Cart
     template_name = 'cart.html'
+
+
+# Delete Item from cart view (via URL)
+class DeleteCartItemView(DeleteView):
+    model = CartItem
+    template_name = 'cart.html'
+    success_url = reverse_lazy('cart')
