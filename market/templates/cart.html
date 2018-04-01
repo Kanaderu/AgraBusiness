@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     {% empty %}
-                    CART EMPTY!
+                    <p>Oh no!<br/>Cart is Empty!<br/>Checkout the <a href="{% url 'produce-list' %}">Produce List</a> to add items to the cart!</p>
                     {% endfor %}
                 </div>
             </div>

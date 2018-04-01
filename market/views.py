@@ -23,6 +23,10 @@ from django.http import HttpResponse
 
 # function that updates a cart's details with its associated cart items
 def UpdateCartDetails(cart):
+
+    # enforce two decimal places via quantization
+    TWOPLACES = Decimal(10) ** -2
+
     # get items in user's cart
     cart_items = CartItem.objects.filter(cart=cart)
 
@@ -34,9 +38,9 @@ def UpdateCartDetails(cart):
 
     # update cart
     cart = cart
-    cart.subtotal = sum
-    cart.tax = cart.subtotal * cart.tax_rate / Decimal(100.00)
-    cart.total = cart.tax + cart.subtotal
+    cart.subtotal = Decimal(sum).quantize(TWOPLACES)
+    cart.tax = Decimal(cart.subtotal * cart.tax_rate / Decimal(100.00)).quantize(TWOPLACES)
+    cart.total = Decimal(cart.tax + cart.subtotal).quantize(TWOPLACES)
     cart.save()
 
 
