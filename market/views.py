@@ -18,7 +18,8 @@ from django.views.generic.edit import DeleteView
 from django.utils import timezone
 from django.views.generic.detail import SingleObjectMixin
 from decimal import Decimal
-from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 # function that updates a cart's details with its associated cart items
@@ -45,7 +46,7 @@ def UpdateCartDetails(cart):
 
 
 # Edit User View
-class EditUserView(View):
+class EditUserView(LoginRequiredMixin, View):
     user_form = DjangoUserForm
     userinfo_form = UserInfoForm
     pmethod_form = PaymentMethodForm
@@ -117,7 +118,7 @@ class RegisterView(View):
 
 
 # User Add Credit Card View
-class AddCreditCardView(View):
+class AddCreditCardView(LoginRequiredMixin, View):
     pmethod_form = PaymentMethodForm
     creditcard_formset = CreditCardFormSet
     template_name = 'creditcard_form.html'
@@ -151,7 +152,7 @@ class AddCreditCardView(View):
 
 
 # User Add Bank Account View
-class AddBankAccountView(View):
+class AddBankAccountView(LoginRequiredMixin, View):
     pmethod_form = PaymentMethodForm
     bankaccount_formset = BankAccountFormSet
     template_name = 'bankaccount_form.html'
@@ -258,29 +259,33 @@ class ProduceItemView(View):
 
 
 # Cart View
-class CartView(View):
+class CartView(LoginRequiredMixin, View):
     #model = Cart
     template_name = 'cart.html'
 
+    decorators = [transaction.atomic, login_required]
+
+    @method_decorator(decorators)
     def get(self, request, *args, **kwargs):
         UpdateCartDetails(request.user.cart)
         view = CartListView.as_view()
         return view(request, *args, **kwargs)
 
 '''
+    @method_decorator(decorators)
     def post(self, request, *args, **kwargs):
         view = DeleteCartItemView.as_view()
         return view(request, *args, **kwargs)
 '''
 
 
-class CartListView(ListView):
+class CartListView(LoginRequiredMixin, ListView):
     model = Cart
     template_name = 'cart.html'
 
 
 # Delete Item from cart view (via URL)
-class DeleteCartItemView(DeleteView):
+class DeleteCartItemView(LoginRequiredMixin, DeleteView):
     model = CartItem
     template_name = 'cart.html'
     success_url = reverse_lazy('cart')
