@@ -14,12 +14,11 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 from django.utils import timezone
 from django.views.generic.detail import SingleObjectMixin
 from decimal import Decimal
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 
 # function that updates a cart's details with its associated cart items
@@ -35,7 +34,9 @@ def UpdateCartDetails(cart):
     sum = Decimal(0.00)
 
     for cart_item in cart_items:
-        sum += cart_item.unit_cost * cart_item.quantity
+        cart_item.subtotal = cart_item.unit_cost * cart_item.quantity
+        sum += cart_item.subtotal
+        cart_item.save()
 
     # update cart
     cart = cart
@@ -271,12 +272,9 @@ class CartView(LoginRequiredMixin, View):
         view = CartListView.as_view()
         return view(request, *args, **kwargs)
 
-'''
-    @method_decorator(decorators)
     def post(self, request, *args, **kwargs):
-        view = DeleteCartItemView.as_view()
-        return view(request, *args, **kwargs)
-'''
+        print("Posted!")
+        return reverse_lazy('cart')
 
 
 class CartListView(LoginRequiredMixin, ListView):
@@ -289,3 +287,18 @@ class DeleteCartItemView(LoginRequiredMixin, DeleteView):
     model = CartItem
     template_name = 'cart.html'
     success_url = reverse_lazy('cart')
+
+
+# Update Item Quantity from cart view (via URL/post from cart)
+class UpdateCartQtyView(LoginRequiredMixin, UpdateView):
+    model = CartItem
+    fields = ['quantity']
+    template_name = 'cart.html'
+    success_url = reverse_lazy('cart')
+
+    decorators = [transaction.atomic, login_required]
+
+    @method_decorator(decorators)
+    def post(self, request, *args, **kwargs):
+        UpdateCartDetails(request.user.cart)
+        return super().post(self, *args, **kwargs)

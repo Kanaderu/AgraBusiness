@@ -103,9 +103,3 @@ class AddProduceItemToCart(forms.Form):
                                   widget=forms.NumberInput(attrs={'class': 'form-control'}))
     class Meta:
         model = CartItem
-        #fields = {'quantity'}
-        #widgets = {
-        #    'quantity' : forms.NumberInput(attrs={'class': 'form-control'}),
-        #}
-    #quantity = forms.IntegerField(label=_('quantity'),
-    #                              widget=forms.NumberInput(attrs={'class': 'form-control'}))

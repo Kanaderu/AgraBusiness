@@ -34,15 +34,19 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4 quantity">
-                                            <label for="quantity">Quantity:</label>
-                                            <input id="quantity" type="number" value ="{{ cart_item.quantity }}" class="form-control quantity-input">
+                                            <label>Quantity:</label>
+                                            <form action="{% url 'cartitem-update-qty' pk=cart_item.id %}" method="post">
+                                                <input name="quantity" type="number" value ="{{ cart_item.quantity }}" class="form-control quantity-input">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-info">Update Qty</button>
+                                            </form>
                                             <form action="{% url 'cartitem-delete' pk=cart_item.id %}" method="post">
                                                 {% csrf_token %}
-                                                <button class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
                                         </div>
                                         <div class="col-md-3 quantity">
-                                            <label for="quantity">Subtotal:</label>
+                                            <label>Subtotal:</label>
                                             <span class="price">${{ cart_item.subtotal|intcomma }}</span>
                                         </div>
                                     </div>
