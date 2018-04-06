@@ -87,19 +87,9 @@ BankAccountFormSet = forms.inlineformset_factory(PaymentMethod, BankAccount, for
 
 
 # Cart Forms
-'''
-class AddProduceItemToCart(forms.ModelForm):
-    class Meta:
-        model = CartItem
-        fields = {'quantity'}
-        widgets = {
-            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
-        }
-'''
-
-
 class AddProduceItemToCart(forms.Form):
-    quantity = forms.IntegerField(label=_('quantity'),
+    quantity = forms.IntegerField(label=_('quantity'), min_value=0,
                                   widget=forms.NumberInput(attrs={'class': 'form-control'}))
+
     class Meta:
         model = CartItem

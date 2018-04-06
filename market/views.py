@@ -302,3 +302,8 @@ class UpdateCartQtyView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         UpdateCartDetails(request.user.cart)
         return super().post(self, *args, **kwargs)
+
+    def form_invalid(self, form):
+        print("FORM INVALID!")
+        messages.error(self.request, 'Invalid quantity value')
+        return super().form_invalid(form)
