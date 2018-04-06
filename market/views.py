@@ -304,6 +304,25 @@ class UpdateCartQtyView(LoginRequiredMixin, UpdateView):
         return super().post(self, *args, **kwargs)
 
     def form_invalid(self, form):
-        print("FORM INVALID!")
         messages.error(self.request, 'Invalid quantity value')
         return super().form_invalid(form)
+
+
+class CheckoutView(LoginRequiredMixin, ListView):
+    model = CartItem
+    template_name = 'checkout.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CheckoutView, self).get_context_data(**kwargs)
+        #user_info = UserInfo.objects.get(user=self.request.user)
+        payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
+        print("pm is " + str(payment_method))
+        credit_cards = CreditCard.objects.filter(payment_method=payment_method)
+        context.update({
+            #'cart': Cart.objects.get(user=self.request.user)
+            'cart': self.request.user.cart,
+            'credit_cards': credit_cards,
+            #'character_universe_list': CharacterUniverse.objects.order_by('name'),
+            #'more_context': Model.objects.all(),
+        })
+        return context

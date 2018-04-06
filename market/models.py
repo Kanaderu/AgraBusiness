@@ -119,3 +119,21 @@ class ProduceGroup(models.Model):
 
 class InventoryPool(models.Model):
     total_stock_quantity = models.PositiveIntegerField()
+
+
+# Order Model
+class Order(models.Model):
+    ORDER_TYPE = (
+        (0, 'Sell'),
+        (1, 'Buy')
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+    #shipping_info
+    #tracking_info
+    order_type = models.BooleanField(choices=ORDER_TYPE, default=1)
+    tax = models.DecimalField(default=0, max_digits=25, decimal_places=2)
+    tax_rate = models.DecimalField(default=7.25, max_digits=3, decimal_places=2)
+    subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+    total = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)

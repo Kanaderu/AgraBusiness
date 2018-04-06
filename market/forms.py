@@ -63,10 +63,10 @@ class CreditCardForm(forms.ModelForm):
         model = CreditCard
         fields = ('name', 'number', 'ccv', 'exp')
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'number': forms.NumberInput(attrs={'class': 'form-control'}),
-            'ccv': forms.NumberInput(attrs={'class': 'form-control'}),
-            'exp': forms.DateInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Card Number'}),
+            'ccv': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'CCV'}),
+            'exp': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'MM/DD/YYYY'}),
         }
 
 
