@@ -4,7 +4,7 @@
 {% block page_name %}User Account{% endblock %}
 
 {% block content %}
-<h3><a href="{% url 'bankaccount' %}">Edit Bank Accounts</a> | <a href="{% url 'cc' %}">Edit Credit Cards</a></h3>
+<h3><a href="{% url 'bankaccount' %}"><i class="fas fa-piggy-bank"></i> Edit Bank Accounts</a> | <a href="{% url 'cc' %}"><i class="fas fa-credit-card"></i> Edit Credit Cards</a></h3>
     <ul class="messages">
         {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
