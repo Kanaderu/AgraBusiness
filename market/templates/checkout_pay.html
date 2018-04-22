@@ -5,26 +5,26 @@
 {% for cc in credit_cards %}
     <a href="{% url 'checkout-ship' pk=cc.id %}" style="padding: 15px 20px 15px 20px;" class="btn btn-block btn-light-blue btn-outline-blue">
         <div style="z-index: -1;" class="row">
-                <div class="form-group col-sm-7">
-                    <label for="card-holder">Card Holder</label>
-                    <input id="card-holder" type="text" class="form-control" value="{{ cc.name }}" disabled/>
+            <div class="form-group col-sm-8">
+                <label for="card-holder">Card Holder</label>
+                <input id="card-holder" type="text" class="form-control" value="{{ cc.name }}" disabled/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="">Expiration Date</label>
+                <div class="input-group expiration-date">
+                    <input type="text" maxlength="2" style="padding: .375rem .75rem;" class="form-control" value="{{ cc.exp|date:'m' }}" disabled/>
+                    <span class="date-separator">/</span>
+                    <input type="text" maxlength="4" style="padding: .375rem .75rem;" class="form-control" value="{{ cc.exp|date:'Y' }}" disabled/>
                 </div>
-                <div class="form-group col-sm-5">
-                    <label for="">Expiration Date</label>
-                    <div class="input-group expiration-date">
-                        <input type="text" maxlength="2" style="padding: .375rem .75rem;" class="form-control" value="{{ cc.exp|date:'m' }}" disabled/>
-                        <span class="date-separator">/</span>
-                        <input type="text" maxlength="4" style="padding: .375rem .75rem;" class="form-control" value="{{ cc.exp|date:'Y' }}" disabled/>
-                    </div>
-                </div>
-                <div class="form-group col-sm-8">
-                    <label for="card-number">Card Number</label>
-                    <input id="card-number" type="text" class="form-control" value="{{ cc.number }}" disabled/>
-                </div>
-                <div class="form-group col-sm-4">
-                    <label for="ccv">CCV</label>
-                    <input id="ccv" type="text" class="form-control" placeholder="{{ cc.ccv }}" disabled/>
-                </div>
+            </div>
+            <div class="form-group col-sm-8">
+                <label for="card-number">Card Number</label>
+                <input id="card-number" type="text" class="form-control" value="{{ cc.number }}" disabled/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="ccv">CCV</label>
+                <input id="ccv" type="text" class="form-control" placeholder="{{ cc.ccv }}" disabled/>
+            </div>
         </div>
     </a>
     <hr/>

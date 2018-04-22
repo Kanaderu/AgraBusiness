@@ -148,3 +148,27 @@ class CartItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CartItem, CartItemAdmin)
+
+
+# Define ShippingInformation Admin
+class ShippingInformationAdmin(admin.ModelAdmin):
+    # elements to show on list
+    list_display = ('shipping_address_line1',
+                    'shipping_address_line2',
+                    'shipping_zip_code',
+                    'shipping_state',
+                    'shipping_city',
+                    'shipping_cost')
+
+    # editable fields
+    fieldsets = [
+        (None, {'fields': ['shipping_address_line1',
+                           'shipping_address_line2',
+                           'shipping_zip_code',
+                           'shipping_state',
+                           'shipping_city',
+                           'shipping_cost']}),
+    ]
+
+
+admin.site.register(ShippingInformation, ShippingInformationAdmin)

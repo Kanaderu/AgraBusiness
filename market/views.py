@@ -11,10 +11,10 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, ContextMixin
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
-from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.utils import timezone
 from django.views.generic.detail import SingleObjectMixin
 from decimal import Decimal
@@ -325,20 +325,18 @@ class CheckoutPaymentView(LoginRequiredMixin, ListView):
         return context
 
 
-class CheckoutShipmentView(LoginRequiredMixin, TemplateView):
+class CheckoutShipmentView(LoginRequiredMixin, CreateView):
+    form_class = ShippingInformationForm
     model = CartItem
     template_name = 'checkout_ship.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CheckoutShipmentView, self).get_context_data(**kwargs)
-        #user_info = UserInfo.objects.get(user=self.request.user)
+    success_url = reverse_lazy('cart')
+    
+    def get(self, request, *args, **kwargs):
         payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
-        credit_card = CreditCard.objects.get(id=self.kwargs['pk'])
-        context.update({
-            #'cart': Cart.objects.get(user=self.request.user)
+        credit_card = CreditCard.objects.get(payment_method=payment_method, id=self.kwargs['pk'])
+
+        return render(request, self.template_name, {
+            'form': self.form_class,
             'cart': self.request.user.cart,
             'cc': credit_card,
-            #'character_universe_list': CharacterUniverse.objects.order_by('name'),
-            #'more_context': Model.objects.all(),
         })
-        return context

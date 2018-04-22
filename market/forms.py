@@ -57,6 +57,7 @@ class PaymentMethodForm(forms.ModelForm):
             'billing_city': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
@@ -94,3 +95,24 @@ class AddProduceItemToCart(forms.Form):
 
     class Meta:
         model = CartItem
+
+
+# Shipping Information Form
+class ShippingInformationForm(forms.ModelForm):
+    class Meta:
+        model = ShippingInformation
+        fields = '__all__'
+        widgets = {
+            'shipping_address_line1': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_address_line2': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_city': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_state': forms.TextInput(attrs={'class': 'form-control'}),
+            'shipping_zip_code': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'shipping_address_line1': _('Address Line 1'),
+            'shipping_address_line2': _('Address Line 2'),
+            'shipping_city': _('City'),
+            'shipping_state': _('State'),
+            'shipping_zip_code': _('Zipcode'),
+        }
