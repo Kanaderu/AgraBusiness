@@ -131,10 +131,27 @@ class Order(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
-    #shipping_info
+    shipping_info = models.OneToOneField('ShippingInformation', default=None, on_delete=models.CASCADE)
     #tracking_info
     order_type = models.BooleanField(choices=ORDER_TYPE, default=1)
     tax = models.DecimalField(default=0, max_digits=25, decimal_places=2)
     tax_rate = models.DecimalField(default=7.25, max_digits=3, decimal_places=2)
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+
+
+# Shipping Model
+class ShippingInformation(models.Model):
+    shipping_address_line1 = models.CharField(max_length=256, help_text="Billing Address Line 1")
+    shipping_address_line2 = models.CharField(max_length=256, help_text="Billing Address Line 2", blank=True)
+    shipping_zip_code = models.PositiveIntegerField(default=0, help_text="Billing Address Zip Code")
+    shipping_state = models.CharField(max_length=2, help_text="Billing Address State")
+    shipping_city = models.CharField(max_length=256, help_text="Billing Address City")
+    shipping_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+
+    def __str__(self):
+        return self.shipping_address_line1
+
+    def save(self, *args, **kwargs):
+        self.shipping_state = self.shipping_state.upper()
+        return super(ShippingInformation, self).save(*args, **kwargs)

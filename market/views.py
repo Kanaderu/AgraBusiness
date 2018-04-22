@@ -272,7 +272,7 @@ class CartView(LoginRequiredMixin, View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse_lazy('checkout'))
+        return redirect(reverse_lazy('checkout-pay'))
 
 
 class CartListView(LoginRequiredMixin, ListView):
@@ -306,20 +306,38 @@ class UpdateCartQtyView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class CheckoutView(LoginRequiredMixin, ListView):
+class CheckoutPaymentView(LoginRequiredMixin, ListView):
     model = CartItem
-    template_name = 'checkout.html'
+    template_name = 'checkout_pay.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CheckoutView, self).get_context_data(**kwargs)
+        context = super(CheckoutPaymentView, self).get_context_data(**kwargs)
         #user_info = UserInfo.objects.get(user=self.request.user)
         payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
-        print("pm is " + str(payment_method))
         credit_cards = CreditCard.objects.filter(payment_method=payment_method)
         context.update({
             #'cart': Cart.objects.get(user=self.request.user)
             'cart': self.request.user.cart,
             'credit_cards': credit_cards,
+            #'character_universe_list': CharacterUniverse.objects.order_by('name'),
+            #'more_context': Model.objects.all(),
+        })
+        return context
+
+
+class CheckoutShipmentView(LoginRequiredMixin, TemplateView):
+    model = CartItem
+    template_name = 'checkout_ship.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CheckoutShipmentView, self).get_context_data(**kwargs)
+        #user_info = UserInfo.objects.get(user=self.request.user)
+        payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
+        credit_card = CreditCard.objects.get(id=self.kwargs['pk'])
+        context.update({
+            #'cart': Cart.objects.get(user=self.request.user)
+            'cart': self.request.user.cart,
+            'cc': credit_card,
             #'character_universe_list': CharacterUniverse.objects.order_by('name'),
             #'more_context': Model.objects.all(),
         })

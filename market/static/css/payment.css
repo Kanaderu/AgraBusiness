@@ -139,3 +139,29 @@
     	margin-top: 2em; 
     } 
 }
+
+
+.fab.fa-cc-amex {
+  color: #007bc1;
+}
+.fab.fa-cc-diners-club {
+  color: #004A97;
+}
+.fab.fa-cc-discover {
+  color: #f68121;
+}
+.fab.fa-cc-jcb {
+  color: #003A8F;
+}
+.fab.fa-cc-mastercard {
+  color: #0a3a82;
+}
+.fab.fa-cc-paypal {
+  color: #253b80;
+}
+.fab.fa-cc-stripe {
+  color: #00afe1;
+}
+.fab.fa-cc-visa {
+  color: #0157a2;
+}
