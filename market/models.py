@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-
+import datetime
 
 # User Account Models
 class UserInfo(models.Model):
@@ -55,7 +55,7 @@ class CreditCard(models.Model):
     name = models.CharField(max_length=256, help_text="Name on Credit Card")
     number = models.PositiveIntegerField(help_text="Credit Card Number")  # normally a 12 digit integer
     ccv = models.PositiveIntegerField(help_text="Credit Card CCV (Card Verification Value)")  # normally a 3 or 4 digit integer
-    exp = models.DateField()
+    exp = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name

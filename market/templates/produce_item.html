@@ -1,35 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}AgraBusiness{% endblock %}
 {% block page_name %}Produce Item{% endblock %}
+
+{% block head-tag %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/util.css' %}">
+<script type="text/javascript">
+function incrementQty() {
+    var value = parseInt(document.getElementById('id_quantity').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    document.getElementById('id_quantity').value = value;
+}
+function decrementQty() {
+    var value = parseInt(document.getElementById('id_quantity').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value = value == 0 ? 0 : value-1;
+    document.getElementById('id_quantity').value = value;
+}</script>
+{% endblock %}
+
 {% block content %}
 
 {% if object %}
-    {{ object.produce_name }}
-    {{ object.description }}
-    {{ object.price }}
-    {{ object.expiration }}
+	<div class="container bgwhite p-t-35 p-b-80">
+		<div class="flex-w flex-sb">
+			<div class="w-size13 p-t-30">
+                <div class="slick3 item-slick3 wrap-pic-w">
+                    <img src="https://udayton.edu/universitymarketing/_resources/img/logo-athletics.jpg">
+                </div>
+			</div>
 
-    {% if user.is_authenticated %}
-    <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        <p>
-            <div class="form-group">
-                {{ field.label_tag }}<br>
-                {{ field }}
-                {% if field.help_text %}
-                <small style="color: grey">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
+			<div class="w-size14 p-t-30 respon5">
+				<h4 class="product-detail-name m-text16 p-b-13">{{ object.produce_name|title }}</h4>
+				<span class="m-text17">${{ object.price }}</span>
+				<p class="s-text8 p-t-10">{{ object.description }}</p>
+
+				<!--  -->
+                {% if user.is_authenticated %}
+                <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+				<div class="p-t-33 p-b-60">
+					<div class="flex-r-m flex-w p-t-10">
+						<div class="w-size16 flex-m flex-w">
+							<div class="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
+								<a onclick="decrementQty()" class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+									<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
+								</a>
+                                {{ field }}
+								<a onclick="incrementQty()" class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+									<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+								</a>
+							</div>
+
+							<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
+								<button type="submit" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
                 {% endfor %}
-            </div>
-        </p>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">Add to Cart</button>
-    </form>
-    {% endif %}
-{% endif %}
+                </form>
+                {% endif %}
 
+				<div class="p-b-45">
+					<span class="s-text8 m-r-35">Expiration Date: {{ object.expiration }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
 {% endblock %}

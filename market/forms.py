@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import *
 from django.utils.translation import gettext as _
-
+import datetime
 
 # Edit User Account Forms
 class DjangoUserForm(forms.ModelForm):
@@ -57,7 +57,6 @@ class PaymentMethodForm(forms.ModelForm):
             'billing_city': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
@@ -67,6 +66,7 @@ class CreditCardForm(forms.ModelForm):
             'number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Card Number'}),
             'ccv': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'CCV'}),
             'exp': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'MM/DD/YYYY'}),
+            #'exp': forms.DateInput(format='%m/%Y', attrs={'class': 'form-control', 'placeholder': 'MM/YYYY'}),
         }
 
 
@@ -88,8 +88,9 @@ BankAccountFormSet = forms.inlineformset_factory(PaymentMethod, BankAccount, for
 
 # Cart Forms
 class AddProduceItemToCart(forms.Form):
-    quantity = forms.IntegerField(label=_('quantity'), min_value=0,
-                                  widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    quantity = forms.IntegerField(label=_('quantity'), min_value=0, initial=1,
+                                  widget=forms.NumberInput(attrs={'class': 'size8 m-text18 t-center num-product',
+                                                                  'name': "qty-product"}))
 
     class Meta:
         model = CartItem

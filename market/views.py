@@ -242,7 +242,7 @@ class ProduceItemFormView(SingleObjectMixin, FormView):
         return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('produce-list')
+        return reverse_lazy('cart')
         #return reverse_lazy('produce-item', kwargs={'pk': self.object.pk})
 
 
@@ -261,7 +261,6 @@ class ProduceItemView(View):
 
 # Cart View
 class CartView(LoginRequiredMixin, View):
-    #model = Cart
     template_name = 'cart.html'
 
     decorators = [transaction.atomic, login_required]
@@ -273,8 +272,7 @@ class CartView(LoginRequiredMixin, View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print("Posted!")
-        return reverse_lazy('cart')
+        return redirect(reverse_lazy('checkout'))
 
 
 class CartListView(LoginRequiredMixin, ListView):
