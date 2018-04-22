@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 import datetime
 
+
 # User Account Models
 class UserInfo(models.Model):
     USER_TYPE = (
