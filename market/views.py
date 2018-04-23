@@ -361,6 +361,7 @@ class CheckoutShipmentView(LoginRequiredMixin, View):
                 user=self.request.user,
                 date_last_modified=timestamp,
                 shipping_info=shipping_info,
+                card_payment=credit_card,
                 order_type=1,
                 tax=cart.tax,
                 tax_rate=cart.tax_rate,
@@ -386,8 +387,10 @@ class CheckoutShipmentView(LoginRequiredMixin, View):
                 cart_item.delete()
 
             UpdateCartDetails(cart)
-
+            messages.success(request, _('Order ' + str(order.id) + ' was successfully placed!'))
             return redirect('order-list')
+        else:
+            messages.error(request, _('Error placing order'))
 
         return render(request, self.template_name, {
             'form': self.form_class,

@@ -59,7 +59,7 @@ class CreditCard(models.Model):
     exp = models.DateField()
 
     def __str__(self):
-        return self.name
+        return self.name + ' ' + str(self.number)
 
 
 class BankAccount(models.Model):
@@ -149,6 +149,7 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField()
     shipping_info = models.OneToOneField('ShippingInformation', default=None, on_delete=models.CASCADE)
+    card_payment = models.ForeignKey('CreditCard', on_delete=models.CASCADE, default=None)
     #tracking_info
     order_type = models.BooleanField(choices=ORDER_TYPE, default=1)
     tax = models.DecimalField(default=0, max_digits=25, decimal_places=2)

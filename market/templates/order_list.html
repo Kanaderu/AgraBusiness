@@ -5,6 +5,13 @@
 {% block content %}
 
 {% if object_list %}
+{% for message in messages %}
+<div class="col-sm-12">
+    <div class="alert alert-{{ message.tags }}">
+        <strong style="font-weight: bold;">{{ message.tags|title }}!</strong> {{ message }}
+    </div>
+</div>
+{% endfor %}
 <table>
     <tr>
         <th>Order ID</th>
