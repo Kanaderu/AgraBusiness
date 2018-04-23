@@ -19,12 +19,22 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
+from django.shortcuts import redirect
+
+
+# redirect logged in user when accessing login page
+def custom_login(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        return auth_views.login(request, template_name='login.html')
 
 urlpatterns = [
     re_path(r'^favicon.ico$', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'), permanent=False), name="favicon"),
     path('market/', include('market.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('login/', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    #path('login/', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    re_path(r'^login/', custom_login, name='login'),
     path('logout/', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
     path('admin/', admin.site.urls),
 ]

@@ -56,7 +56,7 @@ class CreditCard(models.Model):
     name = models.CharField(max_length=256, help_text="Name on Credit Card")
     number = models.PositiveIntegerField(help_text="Credit Card Number")  # normally a 12 digit integer
     ccv = models.PositiveIntegerField(help_text="Credit Card CCV (Card Verification Value)")  # normally a 3 or 4 digit integer
-    exp = models.DateField(default=datetime.date.today)
+    exp = models.DateField()
 
     def __str__(self):
         return self.name
@@ -122,15 +122,32 @@ class InventoryPool(models.Model):
     total_stock_quantity = models.PositiveIntegerField()
 
 
+# Shipping Model
+class ShippingInformation(models.Model):
+    shipping_address_line1 = models.CharField(max_length=256, help_text="Billing Address Line 1")
+    shipping_address_line2 = models.CharField(max_length=256, help_text="Billing Address Line 2", blank=True)
+    shipping_zip_code = models.PositiveIntegerField(default=0, help_text="Billing Address Zip Code")
+    shipping_state = models.CharField(max_length=2, help_text="Billing Address State")
+    shipping_city = models.CharField(max_length=256, help_text="Billing Address City")
+    #shipping_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+
+    def __str__(self):
+        return self.shipping_address_line1 + ' ' + self.shipping_city + ', ' + self.shipping_state + ' ' + str(self.shipping_zip_code)
+
+    def save(self, *args, **kwargs):
+        self.shipping_state = self.shipping_state.upper()
+        return super(ShippingInformation, self).save(*args, **kwargs)
+
+
 # Order Model
 class Order(models.Model):
     ORDER_TYPE = (
         (0, 'Sell'),
         (1, 'Buy')
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    date_last_modified = models.DateTimeField(auto_now=True)
+    date_last_modified = models.DateTimeField()
     shipping_info = models.OneToOneField('ShippingInformation', default=None, on_delete=models.CASCADE)
     #tracking_info
     order_type = models.BooleanField(choices=ORDER_TYPE, default=1)
@@ -139,19 +156,21 @@ class Order(models.Model):
     subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
 
+    def __str__(self):
+        return str(self.user) + ': order ' + str(self.id)
 
-# Shipping Model
-class ShippingInformation(models.Model):
-    shipping_address_line1 = models.CharField(max_length=256, help_text="Billing Address Line 1")
-    shipping_address_line2 = models.CharField(max_length=256, help_text="Billing Address Line 2", blank=True)
-    shipping_zip_code = models.PositiveIntegerField(default=0, help_text="Billing Address Zip Code")
-    shipping_state = models.CharField(max_length=2, help_text="Billing Address State")
-    shipping_city = models.CharField(max_length=256, help_text="Billing Address City")
-    shipping_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    produce_name = models.CharField(max_length=256)
+    #produce_type
+    expiration = models.DateField()
+    description = models.CharField(max_length=5000)
+    #image_name
+    supplier = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    unit_cost = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
+    subtotal = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
 
     def __str__(self):
-        return self.shipping_address_line1
-
-    def save(self, *args, **kwargs):
-        self.shipping_state = self.shipping_state.upper()
-        return super(ShippingInformation, self).save(*args, **kwargs)
+        return str(self.id) + ' ' + self.produce_name + ' ' + str(self.price)

@@ -1,7 +1,9 @@
 {% extends 'checkout_base.html' %}
 
 {% block credit-card-info %}
-<p align="center"><label style="font-size: 15px">Select Payment Method</label></p>
+{% if credit_cards %}
+    <p align="center"><label style="font-size: 15px">Select Payment Method</label></p>
+{% endif %}
 {% for cc in credit_cards %}
     <a href="{% url 'checkout-ship' pk=cc.id %}" style="padding: 15px 20px 15px 20px;" class="btn btn-block btn-light-blue btn-outline-blue">
         <div style="z-index: -1;" class="row">
@@ -28,5 +30,7 @@
         </div>
     </a>
     <hr/>
+{% empty %}
+    <p align="center"><label style="font-size: 15px">No payment method available! <a href="{% url 'user' %}">Edit account</a> to add add a payment method.</label></p>
 {% endfor %}
 {% endblock %}

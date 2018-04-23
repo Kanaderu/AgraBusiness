@@ -53,7 +53,8 @@ class PaymentMethodForm(forms.ModelForm):
             'billing_address_line1': forms.TextInput(attrs={'class': 'form-control'}),
             'billing_address_line2': forms.TextInput(attrs={'class': 'form-control'}),
             'billing_zip_code': forms.NumberInput(attrs={'class': 'form-control'}),
-            'billing_state': forms.TextInput(attrs={'class': 'form-control'}),
+            'billing_state': forms.TextInput(attrs={'class': 'form-control',
+                                                    'style': 'text-transform:uppercase'}),
             'billing_city': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -105,14 +106,15 @@ class ShippingInformationForm(forms.ModelForm):
         widgets = {
             'shipping_address_line1': forms.TextInput(attrs={'class': 'form-control'}),
             'shipping_address_line2': forms.TextInput(attrs={'class': 'form-control'}),
-            'shipping_city': forms.TextInput(attrs={'class': 'form-control'}),
-            'shipping_state': forms.TextInput(attrs={'class': 'form-control'}),
             'shipping_zip_code': forms.NumberInput(attrs={'class': 'form-control'}),
+            'shipping_state': forms.TextInput(attrs={'class': 'form-control',
+                                                     'style': 'text-transform:uppercase'}),
+            'shipping_city': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'shipping_address_line1': _('Address Line 1'),
             'shipping_address_line2': _('Address Line 2'),
-            'shipping_city': _('City'),
-            'shipping_state': _('State'),
             'shipping_zip_code': _('Zipcode'),
+            'shipping_state': _('State'),
+            'shipping_city': _('City'),
         }

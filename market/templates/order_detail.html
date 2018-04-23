@@ -1,6 +1,36 @@
 {% extends 'base.html' %}
 
+{% block title %}AgraBusiness{% endblock %}
+{% block page_name %}Order {{ object.id }} Details{% endblock %}
 
+
+{% block content %}
 {% if object %}
-    {{ object.date_created }}
+<p>
+    ID: {{ object.id }}<br/>
+    Buyer: {{ object.user }}<br/>
+    Shipping Info: {{ object.shipping_info }}<br/>
+    Date Created: {{ object.date_created }}<br/>
+    Order Type: {{ object.get_order_type_display }}<br/>
+    Tax Rate: {{ object.tax_rate }}<br/>
+    Tax: {{ object.tax }}<br/>
+    Subtotal: {{ object.subtotal }}<br/>
+    Total: {{ object.total }}<br/>
+</p>
+
+<p>
+<h2>Items Ordered</h2><hr/>
+{% for item in order_item %}
+    Produce Name: {{ item.produce_name }}<br/>
+    Description: {{ item.description }}<br/>
+    Expiration: {{ item.expiration }}<br/>
+    Quantity: {{ item.quantity }}<br/>
+    Unit Cost: {{ item.unit_cost }}<br/>
+    Subtotal: {{ item.subtotal }}<br/>
+    Supplier: {{ item.supplier }}<br/>
+    <hr/>
+{% endfor %}
+</p>
+
 {% endif %}
+{% endblock %}

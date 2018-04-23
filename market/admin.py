@@ -158,7 +158,8 @@ class ShippingInformationAdmin(admin.ModelAdmin):
                     'shipping_zip_code',
                     'shipping_state',
                     'shipping_city',
-                    'shipping_cost')
+                    #'shipping_cost'
+                    )
 
     # editable fields
     fieldsets = [
@@ -167,8 +168,71 @@ class ShippingInformationAdmin(admin.ModelAdmin):
                            'shipping_zip_code',
                            'shipping_state',
                            'shipping_city',
-                           'shipping_cost']}),
+                           #'shipping_cost',
+                           ]}),
     ]
 
 
 admin.site.register(ShippingInformation, ShippingInformationAdmin)
+
+
+# Define Order Admin
+class OrderAdmin(admin.ModelAdmin):
+    # elements to show on list
+    list_display = ('user',
+                    'date_created',
+                    'date_last_modified',
+                    'shipping_info',
+                    'order_type',
+                    'tax',
+                    'tax_rate',
+                    'subtotal',
+                    'total',)
+
+    # list read only fields on editable fields
+    readonly_fields = ['date_created']
+
+    # editable fields
+    fieldsets = [
+        (None, {'fields': ('user',
+                           'date_created',
+                           'date_last_modified',
+                           'shipping_info',
+                           'order_type',
+                           'tax',
+                           'tax_rate',
+                           'subtotal',
+                           'total')})
+    ]
+
+
+admin.site.register(Order, OrderAdmin)
+
+
+# Define OrderItem Admin
+class OrderItemAdmin(admin.ModelAdmin):
+    # elements to show on list
+    list_display = ('order',
+                    'id',
+                    'produce_name',
+                    'expiration',
+                    'description',
+                    'supplier',
+                    'unit_cost',
+                    'quantity',
+                    'subtotal')
+
+    # editable fields
+    fieldsets = [
+        (None, {'fields': ['order',
+                           'produce_name',
+                           'expiration',
+                           'description',
+                           'supplier',
+                           'unit_cost',
+                           'quantity',
+                           'subtotal']})
+    ]
+
+
+admin.site.register(OrderItem, OrderItemAdmin)

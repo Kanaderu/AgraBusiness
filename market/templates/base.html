@@ -19,6 +19,7 @@
                 <a href="{% url 'home' %}" class="bar-item button blue"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
                 <a href="{% url 'produce-list' %}" class="bar-item button hover-white"><i class="fa fa-leaf margin-right"></i>Produce List</a>
                 {% if user.is_authenticated %}
+                <a href="{% url 'order-list' %}" class="bar-item button hover-white"><i class="fas fa-truck-loading margin-right"></i>Orders</a>
                 <a href="{% url 'user' %}" class="bar-item button hover-white"><i class="fa fa-user margin-right"></i>Edit Account</a>
                 <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
                 <a class="bar-item right ">Last Login: {{ user.last_login }}</a>
@@ -35,8 +36,10 @@
 
             <!-- Navbar on small screens -->
             <div class="bar-block black-background small-nav">
-                {% if user.is_authenticated %}
                 <a href="{% url 'home' %}" class="bar-item button blue"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
+                <a href="{% url 'produce-list' %}" class="bar-item button"><i class="fa fa-leaf margin-right"></i>Produce List</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'order-list' %}" class="bar-item button"><i class="fas fa-truck-loading margin-right"></i>Orders</a>
                 <a href="{% url 'user' %}" class="bar-item button"><i class="fa fa-user margin-right"></i>Edit Account</a>
                 <a href="{% url 'logout' %}" class="bar-item button"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
                 {% else %}

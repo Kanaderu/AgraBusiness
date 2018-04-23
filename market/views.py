@@ -20,7 +20,6 @@ from django.views.generic.detail import SingleObjectMixin
 from decimal import Decimal
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 # function that updates a cart's details with its associated cart items
 def UpdateCartDetails(cart):
 
@@ -236,7 +235,6 @@ class ProduceItemFormView(SingleObjectMixin, FormView):
                     'subtotal': self.object.price * quantity,   # compute subtotal
                 }
             )
-
             UpdateCartDetails(request.user.cart)
 
         return super().post(request, *args, **kwargs)
@@ -272,7 +270,7 @@ class CartView(LoginRequiredMixin, View):
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse_lazy('checkout-pay'))
+        return redirect('checkout-pay')
 
 
 class CartListView(LoginRequiredMixin, ListView):
@@ -306,6 +304,7 @@ class UpdateCartQtyView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
+# Checkout Views
 class CheckoutPaymentView(LoginRequiredMixin, ListView):
     model = CartItem
     template_name = 'checkout_pay.html'
@@ -325,12 +324,14 @@ class CheckoutPaymentView(LoginRequiredMixin, ListView):
         return context
 
 
-class CheckoutShipmentView(LoginRequiredMixin, CreateView):
+class CheckoutShipmentView(LoginRequiredMixin, View):
     form_class = ShippingInformationForm
-    model = CartItem
     template_name = 'checkout_ship.html'
     success_url = reverse_lazy('cart')
-    
+
+    decorators = [transaction.atomic]
+
+    @method_decorator(decorators)
     def get(self, request, *args, **kwargs):
         payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
         credit_card = CreditCard.objects.get(payment_method=payment_method, id=self.kwargs['pk'])
@@ -340,3 +341,80 @@ class CheckoutShipmentView(LoginRequiredMixin, CreateView):
             'cart': self.request.user.cart,
             'cc': credit_card,
         })
+
+    @method_decorator(decorators)
+    def post(self, request, *args, **kwargs):
+        payment_method = PaymentMethod.objects.get(userinfo=self.request.user.userinfo)
+        credit_card = CreditCard.objects.get(payment_method=payment_method, id=self.kwargs['pk'])
+        form_class = self.form_class(self.request.POST)
+
+        if form_class.is_valid():
+            # create shipping info
+            shipping_info = form_class.save()
+
+            # get cart
+            cart = self.request.user.cart
+
+            # create order
+            timestamp = timezone.now()
+            order = Order.objects.create(
+                user=self.request.user,
+                date_last_modified=timestamp,
+                shipping_info=shipping_info,
+                order_type=1,
+                tax=cart.tax,
+                tax_rate=cart.tax_rate,
+                subtotal=cart.subtotal,
+                total=cart.total
+            )
+            order.save()
+
+            # clear cart
+            cart_items = CartItem.objects.filter(cart=cart)
+            for cart_item in cart_items:
+                order_item = OrderItem.objects.create(
+                    order=order,
+                    produce_name=cart_item.produce_item.produce_name,
+                    expiration=cart_item.produce_item.expiration,
+                    description=cart_item.produce_item.description,
+                    unit_cost=cart_item.unit_cost,
+                    supplier=cart_item.produce_item.supplier,
+                    quantity=cart_item.quantity,
+                    subtotal=cart_item.subtotal
+                )
+                order_item.save()
+                cart_item.delete()
+
+            UpdateCartDetails(cart)
+
+            return redirect('order-list')
+
+        return render(request, self.template_name, {
+            'form': self.form_class,
+            'cart': self.request.user.cart,
+            'cc': credit_card,
+        })
+
+
+# Order ListView
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = 'order_list.html'
+
+
+# Detail view for produce item
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = 'order_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderDetailView, self).get_context_data(**kwargs)
+        context['order_item'] = OrderItem.objects.filter(order=self.object)
+        return context
+
+''' Form to cancel order
+    def get_context_data(self, **kwargs):
+        context = super(ProduceItemDetailView, self).get_context_data(**kwargs)
+        context['form'] = AddProduceItemToCart()
+        return context
+'''

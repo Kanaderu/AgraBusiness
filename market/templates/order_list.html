@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}AgraBusiness{% endblock %}
+{% block page_name %}Orders{% endblock %}
+{% block content %}
+
+{% if object_list %}
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Date Created</th>
+        <th>Shipping Info</th>
+        <th>Total</th>
+    </tr>
+{% endif %}
+{% for order in object_list %}
+    <tr>
+        <td><a href="{% url 'order-detail' pk=order.id %}">{{ order.id }}</a></td>
+        <td>{{ order.date_created }}</td>
+        <td>{{ order.shipping_info }}</td>
+        <td>{{ order.total }}</td>
+    </tr>
+{% empty %}
+    <h3>There are no orders to show.</h3>
+{% endfor %}
+{% if object_list %}
+</table>
+{% endif %}
+
+{% endblock %}
