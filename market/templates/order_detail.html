@@ -1,40 +1,124 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
+{% block head-tag %}
+<style>
+h4 {
+    text-align: right;
+}</style>
+<style>
+table#t1 {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td#t1, th#t1 {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr#t1:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>{% endblock %}
 {% block title %}AgraBusiness{% endblock %}
-{% block page_name %}Order {{ object.id }} Details{% endblock %}
+{% block page_name %}{% endblock %}
 
 
 {% block content %}
-{% if object %}
-<p>
-    ID: {{ object.id }}<br/>
-    Buyer: {{ object.user }}<br/>
-    Shipping Info: {{ object.shipping_info }}<br/>
-    Date Created: {{ object.date_created }}<br/>
-    Order Type: {{ object.get_order_type_display }}<br/>
-    Tax Rate: {{ object.tax_rate }}<br/>
-    Tax: {{ object.tax }}<br/>
-    Subtotal: {{ object.subtotal }}<br/>
-    Total: {{ object.total }}<br/>
-    <br/>
-    Card Name: {{ object.card_payment.name }}<br/>
-    Card Number: {{ object.card_payment.number }}<br/>
-    Card Expiration: {{ object.card_payment.exp }}<br/>
-</p>
 
-<p>
-<h2>Items Ordered</h2><hr/>
-{% for item in order_item %}
-    Produce Name: {{ item.produce_name }}<br/>
-    Description: {{ item.description }}<br/>
-    Expiration: {{ item.expiration }}<br/>
-    Quantity: {{ item.quantity }}<br/>
-    Unit Cost: {{ item.unit_cost }}<br/>
-    Subtotal: {{ item.subtotal }}<br/>
-    Supplier: {{ item.supplier }}<br/>
-    <hr/>
-{% endfor %}
-</p>
+{% if object %}
+<div class="container">
+    <h2>Order {{ object.id }} Details</h2><hr style="height:3px !important;border:none !important;color:#333 !important;background-color:#333 !important;" />
+    <form>
+        <div><h3>Order Confirmations:</h3></div><hr style="height:1px;border:none;background-color:#333;" />
+        <div class="form-group">
+            <label>Transaction ID: {{ object.id }}</label><br><hr style="height:1px;border:none;background-color:#333;" />
+        </div>
+        <div class="form-group">
+            <table id="t1">
+            {% comment %}
+            <tr>
+            <th id="t1">Manager:</th>
+            <th id="t1"><a>John Smith</a></th>
+            </tr>
+            <tr>
+            <th id="t1">Farmer:</th>
+            <th id="t1"><a>Joe Who</a></th>
+            </tr>
+            {% endcomment %}
+                <tr>
+                    <th id="t1">Customer:</th>
+                    <th id="t1"><a>{{ object.user }}</a></th>
+                </tr>
+                <tr >
+                    <th id="t1">Deliver Address:</th>
+                    <th id="t1">{{ object.shipping_info.shipping_address_line1 }}<br/>
+                        {{ object.shipping_info.shipping_city }}, {{ object.shipping_info.shipping_state }} {{ object.shipping_info.shipping_zip_code }}</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <hr style="height:1px;border:none;background-color:#333;" />
+            <label>Order Details:</label><br/>
+            <table id="t1">
+                <tr id="t1">
+                    <th id="t1">Crop</th>
+                    <th id="t1">Supplier</th>
+                    <th id="t1">Expiration</th>
+                    <th id="t1">Quantity</th>
+                    <th id="t1">Cost Per Item</th>
+                    <th id="t1">Total</th>
+                </tr>
+
+                {% for item in order_item %}
+                <tr id="t1">
+                    <td id="t1">{{ item.produce_name }}</td>
+                    <td id="t1">{{ item.supplier }}</td>
+                    <td id="t1">{{ item.expiration }}</td>
+                    <td id="t1">{{ item.quantity|intcomma }}</td>
+                    <td id="t1">{{ item.unit_cost|intcomma }}</td>
+                    <td id="t1">${{ item.subtotal|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr style="height:1px;border:none;background-color:#333;" />
+            <table id="t1" >
+                <tr>
+                    <td id="t1">Sub Total:</td>
+                    <td id="t1">${{ object.subtotal|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td id="t1">Tax ({{ object.tax_rate }}%):</td>
+                    <td id="t1">${{ object.tax|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td id="t1">Total:</td>
+                    <td id="t1">${{ object.total|intcomma }}</td>
+                </tr>
+            </table>
+            <hr style="height:1px;border:none;background-color:#333;" />
+            <label>Payment Details:</label><br/>
+            <table id="t1" >
+                <tr>
+                    <td id="t1">Card Name:</td>
+                    <td id="t1">{{ object.card_payment.name }}</td>
+                </tr>
+                <tr>
+                    <td id="t1">Card Number:</td>
+                    <td id="t1">{{ object.card_payment.number }}</td>
+                </tr>
+                <tr>
+                    <td id="t1">Card Expiration:</td>
+                    <td id="t1">{{ object.card_payment.exp|date:"m/Y" }}</td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
 
 {% endif %}
 {% endblock %}
