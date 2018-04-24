@@ -1,31 +1,68 @@
 {% extends 'base.html' %}
+{% load humanize %}
+
+{% block head-tag %}
+<style>
+h4 {
+    text-align: right;
+}</style>
+<style>
+table#t1 {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td#t1, th#t1 {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr#t1:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>{% endblock %}
 
 {% block title %}AgraBusiness{% endblock %}
-{% block page_name %}Produce List{% endblock %}
+{% block page_name %}{% endblock %}
 {% block content %}
 
 {% if object_list %}
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Expiration Date</th>
-        <th>Supplier</th>
-    </tr>
-{% endif %}
-{% for produce in object_list %}
-    <tr>
-        <td><a href="{% url 'produce-item' pk=produce.id %}">{{ produce.produce_name }}</a></td>
-        <td>{{ produce.description|truncatewords:10 }}</td>
-        <td>{{ produce.price }}</td>
-        <td>{{ produce.expiration }}</td>
-        <td>{{ produce.supplier }}</td>
-    </tr>
-{% empty %}
-    <h3>There are no Produce Items to show.</h3>
+{% for message in messages %}
+<div class="col-sm-12">
+    <div class="alert alert-{{ message.tags }}">
+        <strong style="font-weight: bold;">{{ message.tags|title }}!</strong> {{ message }}
+    </div>
+</div>
 {% endfor %}
-{% if object_list %}
-</table>
+<div class="container">
+    <h2>Produce List</h2><hr style="height:3px !important;border:none !important;color:#333 !important;background-color:#333 !important;" />
+    <form>
+        <div class="form-group">
+            <table id="t1">
+                <tr id="t1">
+                    <th id="t1"><strong>Name</strong></th>
+                    <th id="t1"><strong>Description</strong></th>
+                    <th id="t1"><strong>Price</strong></th>
+                    <th id="t1"><strong>Expiration Date</strong></th>
+                    <th id="t1"><strong>Supplier</strong></th>
+                </tr>
+                {% for produce in object_list %}
+                <tr id="t1">
+                    <td id="t1"><a href="{% url 'produce-item' pk=produce.id %}">{{ produce.produce_name }}</a></td>
+                    <td id="t1">{{ produce.description|truncatewords:10 }}</td>
+                    <td id="t1">${{ produce.price|intcomma }}</td>
+                    <td id="t1">{{ produce.expiration }}</td>
+                    <td id="t1">{{ produce.supplier }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr style="height:1px;border:none;background-color:#333;" />
+        </div>
+    </form>
+</div>
+{% else %}
+    <h3>There are no Produce Items to show.</h3>
 {% endif %}
 {% endblock %}

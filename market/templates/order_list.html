@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
+{% load humanize %}
+
+{% block head-tag %}
+<style>
+h4 {
+    text-align: right;
+}</style>
+<style>
+table#t1 {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td#t1, th#t1 {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr#t1:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>{% endblock %}
 
 {% block title %}AgraBusiness{% endblock %}
-{% block page_name %}Orders{% endblock %}
+{% block page_name %}{% endblock %}
 {% block content %}
 
 {% if object_list %}
@@ -12,26 +36,32 @@
     </div>
 </div>
 {% endfor %}
-<table>
-    <tr>
-        <th>Order ID</th>
-        <th>Date Created</th>
-        <th>Shipping Info</th>
-        <th>Total</th>
-    </tr>
-{% endif %}
-{% for order in object_list %}
-    <tr>
-        <td><a href="{% url 'order-detail' pk=order.id %}">{{ order.id }}</a></td>
-        <td>{{ order.date_created }}</td>
-        <td>{{ order.shipping_info }}</td>
-        <td>{{ order.total }}</td>
-    </tr>
-{% empty %}
+<div class="container">
+    <h2>Orders</h2><hr style="height:3px !important;border:none !important;color:#333 !important;background-color:#333 !important;" />
+    <form>
+        <div class="form-group">
+            <table id="t1">
+                <tr id="t1">
+                    <th id="t1"><strong>Order ID</strong></th>
+                    <th id="t1"><strong>Date Ordered</strong></th>
+                    <th id="t1"><strong>Shipping Address</strong></th>
+                    <th id="t1"><strong>Total</strong></th>
+                </tr>
+                {% for order in object_list %}
+                <tr id="t1">
+                    <td id="t1"><a href="{% url 'order-detail' pk=order.id %}">{{ order.id }}</a></td>
+                    <td id="t1">{{ order.date_created }}</td>
+                    <td id="t1">{{ order.shipping_info }}</td>
+                    <td id="t1">${{ order.total|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr style="height:1px;border:none;background-color:#333;" />
+        </div>
+    </form>
+</div>
+{% else %}
     <h3>There are no orders to show.</h3>
-{% endfor %}
-{% if object_list %}
-</table>
 {% endif %}
 
 {% endblock %}
