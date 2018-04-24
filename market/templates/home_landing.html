@@ -1,0 +1,153 @@
+{% load static %}
+<html>
+    <head>
+        <title>{% block title %}AgraBusiness{% endblock %}</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/fontawesome-all.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+        {% block head-tag %}{% endblock %}
+    </head>
+	<body class="landing">
+		<div id="page-wrapper">
+			<!-- Header -->
+            <header id="header">
+                <h1 id="logo"><a href="{% url 'home' %}">AgraBusiness</a></h1>
+                <nav id="nav">
+                    <ul>
+                        <li></li>
+                        <li><a href="{% url 'home' %}" class="button special">Continue to AgraBusiness</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+			<!-- Banner -->
+            <section id="banner">
+                <div class="content">
+                    <header>
+                        <h2>AgraBusiness</h2>
+                        <p>The Farmer's Marketplace</p>
+                    </header>
+                    <span class="image"><img src="{% static 'images/vector.png' %}" alt="" /></span>
+                </div>
+                <a href="#one" class="goto-next scrolly">Next</a>
+            </section>
+
+			<!-- One -->
+            <section id="one" class="spotlight style1 bottom">
+                <span class="image fit main"><img src="{% static 'images/land-3.jpg' %}" alt="" /></span>
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="4u 12u$(medium)">
+                                <header>
+                                    <h2>Who Are We?</h2>
+                                    <p>Your Farmer's Marketplace.</p>
+                                </header>
+                            </div>
+                            <div class="4u 12u$(medium)">
+                                <p>Agrabusiness is a procurement system for companies with the aim to create
+                                opportunities for farmers to sell their produce</p>
+                            </div>
+                            <div class="4u$ 12u$(medium)">
+                                <p>Bringing together farmers and customers with guidance of professional managers,
+                                we are all able to benefit in supporting local business</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#two" class="goto-next scrolly">Next</a>
+            </section>
+
+			<!-- Two -->
+            <section id="two" class="spotlight style2 right">
+                <span class="image fit main"><img src="{% static 'images/land-1.jpg' %}" alt="" /></span>
+                <div class="content">
+                    <header>
+                        <h2>Helping Farmers</h2>
+                        <p>One farmer at a time</p>
+                    </header>
+                    <p>Bringing consistency to farmer sales and to farmers looking to sell their crop with
+                    peace of mind. Farmers are able to get competitive rates for their crop under the management of
+                    our sales managers.</p>
+                    <ul class="actions">
+                        <li><a href="{% url 'home' %}" class="button">Learn More</a></li>
+                    </ul>
+                </div>
+                <a href="#three" class="goto-next scrolly">Next</a>
+            </section>
+
+			<!-- Three -->
+            <section id="three" class="spotlight style3 left">
+                <span class="image fit main bottom"><img src="{% static 'images/land-2.jpg' %}" alt="" /></span>
+                <div class="content">
+                    <header>
+                        <h2>Attract Customers</h2>
+                        <p>Enabling the support for local business!</p>
+                    </header>
+                    <p>Customers get the convenience of buying crops knowing they are supporting their local farmers!
+                        Having their crops grown locally, everyone can eat healthy and organic produce direct from their
+                        own town!</p>
+                    <ul class="actions">
+                        <li><a href="{% url 'home' %}" class="button">Learn More</a></li>
+                    </ul>
+                </div>
+                <a href="#four" class="goto-next scrolly">Next</a>
+            </section>
+
+			<!-- Four -->
+            <section id="four" class="wrapper style1 special fade-up">
+                <div class="container">
+                    <header class="major">
+                        <h2>Meet the designers!</h2>
+                        <!--p>Product of CPS 592</p-->
+                    </header>
+                    <div class="box alt">
+                        <div class="row uniform">
+                            <section class="6u 4u(medium) 12u$(xsmall)">
+                                <span class="icon alt major fas fa-user"></span>
+                                <h3>David Fan</h3>
+                                <p>CPS 592 Student!</p>
+                            </section>
+                            <section class="6u$ 4u(medium) 12u$(xsmall)">
+                                <span class="icon alt major fa-user"></span>
+                                <h3>Sindhusha Kotapati</h3>
+                                <p>CPS 592 Student!</p>
+                            </section>
+                        </div>
+                    </div>
+                    <h2>Let's jump right in!</h2>
+                    <footer class="major">
+                        <ul class="actions">
+                            <li><a href="{% url 'home' %}" class="button">Continue to AgraBusiness!</a></li>
+                        </ul>
+                    </footer>
+                </div>
+            </section>
+
+            <!--Footer-->
+            <footer class="page-footer font-small stylish-color-dark pt-4 mt-4">
+                <!--Copyright-->
+                <div class="footer-copyright py-3 text-center">
+                    © {% now "Y" %} <a href="{% url 'home' %}"> AgraBusiness</a>
+                </div>
+                <!--/.Copyright-->
+
+            </footer>
+            <!--/.Footer-->
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'js/jquery.min.js' %}"></script>
+			<script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
+			<script src="{% static 'js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'js/skel.min.js' %}"></script>
+			<script src="{% static 'js/util.js' %}"></script>
+			<script src="{% static 'js/main.js' %}"></script>
+
+	</body>
+</html>

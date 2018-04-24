@@ -32,7 +32,8 @@ def custom_login(request):
 urlpatterns = [
     re_path(r'^favicon.ico$', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'), permanent=False), name="favicon"),
     path('market/', include('market.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', TemplateView.as_view(template_name='home_landing.html'), name='landing'),
+    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
     #path('login/', auth_views.login, {'template_name': 'login.html'}, name='login'),
     re_path(r'^login/', custom_login, name='login'),
     path('logout/', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
