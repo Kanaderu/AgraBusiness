@@ -130,3 +130,5 @@ STATIC_URL = '/static/'
 # set login redirection url
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
