@@ -421,3 +421,28 @@ class OrderDetailView(DetailView):
         context['form'] = AddProduceItemToCart()
         return context
 '''
+
+
+# ProduceItem View
+class SellProduceItemView(LoginRequiredMixin, View):
+    produce_form = ProduceItemForm
+    template_name = 'sell_produce_item.html'
+
+    decorators = [transaction.atomic]
+
+    @method_decorator(decorators)
+    def get(self, request, *args, **kwargs):
+        produce_form = self.produce_form()
+
+        return render(request, self.template_name, {'produce_form': produce_form})
+
+    @method_decorator(decorators)
+    def post(self, request, *args, **kwargs):
+        produce_form = self.produce_form(self.request.POST)
+        if produce_form.is_valid():
+            produce_item = produce_form.save(commit=False)
+            produce_item.supplier = request.user
+            produce_item.save()
+            return redirect('produce-list')
+
+        return render(request, self.template_name, {'produce_form': produce_form})

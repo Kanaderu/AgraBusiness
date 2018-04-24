@@ -19,6 +19,9 @@
                 <a href="{% url 'home' %}" class="bar-item button blue"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
                 <a href="{% url 'produce-list' %}" class="bar-item button hover-white"><i class="fa fa-leaf margin-right"></i>Produce List</a>
                 {% if user.is_authenticated %}
+                {% if user.userinfo.user_type == 'f' %}
+                <a href="{% url 'produce-sell' %}" class="bar-item button hover-white"><i class="fab fa-pagelines margin-right"></i>Sell Produce</a>
+                {% endif %}
                 <a href="{% url 'order-list' %}" class="bar-item button hover-white"><i class="fas fa-truck-loading margin-right"></i>Orders</a>
                 <a href="{% url 'user' %}" class="bar-item button hover-white"><i class="fa fa-user margin-right"></i>Edit Account</a>
                 <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
@@ -39,6 +42,9 @@
                 <a href="{% url 'home' %}" class="bar-item button blue"><i class="fa fa-home margin-right"></i>AgraBusiness</a>
                 <a href="{% url 'produce-list' %}" class="bar-item button"><i class="fa fa-leaf margin-right"></i>Produce List</a>
                 {% if user.is_authenticated %}
+                {% if user.userinfo.user_type == 'f' %}
+                <a href="{% url 'produce-sell' %}" class="bar-item button"><i class="fab fa-pagelines margin-right"></i>Sell Produce</a>
+                {% endif %}
                 <a href="{% url 'order-list' %}" class="bar-item button"><i class="fas fa-truck-loading margin-right"></i>Orders</a>
                 <a href="{% url 'user' %}" class="bar-item button"><i class="fa fa-user margin-right"></i>Edit Account</a>
                 <a href="{% url 'logout' %}" class="bar-item button"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>

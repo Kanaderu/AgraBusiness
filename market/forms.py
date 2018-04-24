@@ -118,3 +118,22 @@ class ShippingInformationForm(forms.ModelForm):
             'shipping_state': _('State'),
             'shipping_city': _('City'),
         }
+
+
+# Produce Item Form
+class ProduceItemForm(forms.ModelForm):
+    class Meta:
+        model = ProduceItem
+        fields = ('produce_name', 'expiration', 'description', 'price')
+        widgets = {
+            'produce_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'expiration': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'MM/DD/YYYY'}),
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'produce_name': _('Produce Name'),
+            'expiration': _('Expiration'),
+            'description': _('Description'),
+            'price': _('Price'),
+        }

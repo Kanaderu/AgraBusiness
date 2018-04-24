@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block page_name %}Sell Produce Item{% endblock %}
+{% block content %}
+{% if user.is_authenticated and user.userinfo.user_type == 'f' %}
+<form method="post">
+    {% csrf_token %}
+    {% for field in produce_form %}
+        <p>
+            <div class="form-group" style="width:500px">
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </p>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Sell Produce</button>
+</form>
+{% else %}
+<h1>Only Farmers are permitted to sell produce items!</h1>
+{% endif %}
+{% endblock %}
