@@ -26,6 +26,7 @@
                 <a href="{% url 'user' %}" class="bar-item button hover-white"><i class="fa fa-user margin-right"></i>Edit Account</a>
                 <a href="{% url 'logout' %}" class="bar-item button hover-white"><i class="fa fa-sign-out-alt margin-right"></i>Logout</a>
                 <a class="bar-item right ">Last Login: {{ user.last_login }}</a>
+                <a class="bar-item right ">Hi {{ user.first_name }}!</a>
                 {% else %}
                 <a href="{% url 'login' %}" class="bar-item button hover-white"><i class="fa fa-sign-in-alt margin-right"></i>Login</a>
                 <a href="{% url 'register' %}" class="bar-item button hover-white"><i class="fa fa-user-plus margin-right"></i>Register</a>
