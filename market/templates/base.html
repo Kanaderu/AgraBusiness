@@ -93,34 +93,6 @@
             {% block content %}
             {% endblock %}
         </div>
-
-        {% comment %}
-        {% if user.is_authenticated %}
-        Hi {{ user.username }}!<br/>
-        Last Login: {{ user.last_login }}<br/>
-        email: {{ user.email }}<br/>
-        first_name: {{ user.first_name }}<br/>
-        first_name: {{ user.last_name }}<br/>
-        user_type: {{ user.userinfo.user_type }}<br/>
-        billing_line1: {{ user.userinfo.payment_method.billing_address_line1 }}<br/>
-        billing_line2: {{ user.userinfo.payment_method.billing_address_line2 }}<br/>
-        billing_zip_code: {{ user.userinfo.payment_method.billing_zip_code }}<br/>
-        billing_state: {{ user.userinfo.payment_method.billing_state }}<br/>
-        billing_city: {{ user.userinfo.payment_method.billing_city }}<br/>
-        {% for cc in user.userinfo.payment_method.creditcard_set.all %}
-            card_name: {{ cc.name }}<br/>
-            card_number: {{ cc.number }}<br/>
-            card_ccv: {{ cc.ccv }}<br/>
-            card_exp: {{ cc.exp }}<br/>
-        {% endfor %}
-        {% for ba in user.userinfo.payment_method.bankaccount_set.all %}
-            bank_first_name: {{ ba.first_name }}<br/>
-            bank_last_name: {{ ba.last_name }}<br/>
-            bank_routing_number: {{ ba.routing_number }}<br/>
-            bank_account_number: {{ ba.account_number }}<br/>
-        {% endfor %}
-        {% endif %}
-        {% endcomment %}
     </main>
 
     <!--Footer-->
@@ -146,20 +118,29 @@
 
                 <!--Second column-->
                 <div class="col-md-2 mx-auto">
-                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">Links</h5>
+                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">Account</h5>
                     <ul class="list-unstyled">
+                        {% if user.is_authenticated %}
                         <li>
-                            <a href="#!">Link 1</a>
+                            <a href="{% url 'user' %}">Edit Account</a>
                         </li>
                         <li>
-                            <a href="#!">Link 2</a>
+                            <a href="{% url 'cart' %}">Cart</a>
                         </li>
                         <li>
-                            <a href="#!">Link 3</a>
+                            <a href="{% url 'order-list' %}">Orders</a>
                         </li>
                         <li>
-                            <a href="#!">Link 4</a>
+                            <a href="{% url 'logout' %}">Logout</a>
                         </li>
+                        {% else %}
+                        <li>
+                            <a href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'register' %}">Register</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!--/.Second column-->
@@ -168,20 +149,16 @@
 
                 <!--Third column-->
                 <div class="col-md-2 mx-auto">
-                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">Links</h5>
+                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">Market</h5>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="#!">Link 1</a>
+                            <a href="{% url 'produce-list' %}">Produce List</a>
                         </li>
+                        {% if user.is_authenticated and user.userinfo.user_type == 'f' %}
                         <li>
-                            <a href="#!">Link 2</a>
+                            <a href="{% url 'produce-sell' %}">Sell Produce</a>
                         </li>
-                        <li>
-                            <a href="#!">Link 3</a>
-                        </li>
-                        <li>
-                            <a href="#!">Link 4</a>
-                        </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!--/.Third column-->
@@ -190,19 +167,16 @@
 
                 <!--Fourth column-->
                 <div class="col-md-2 mx-auto">
-                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">Links</h5>
+                    <h5 class="text-uppercase mb-4 mt-3 font-weight-bold">About</h5>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="#!">Link 1</a>
+                            <a>About Us</a>
                         </li>
                         <li>
-                            <a href="#!">Link 2</a>
+                            <a>Support</a>
                         </li>
                         <li>
-                            <a href="#!">Link 3</a>
-                        </li>
-                        <li>
-                            <a href="#!">Link 4</a>
+                            <a>Contact</a>
                         </li>
                     </ul>
                 </div>

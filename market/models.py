@@ -106,6 +106,7 @@ class ProduceItem(models.Model):
     price = models.DecimalField(default=0.00, max_digits=25, decimal_places=2)
     #image_name
     supplier = models.ForeignKey(User, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id) + ' ' + self.produce_name + ' ' + str(self.price)

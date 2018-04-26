@@ -124,16 +124,18 @@ class ShippingInformationForm(forms.ModelForm):
 class ProduceItemForm(forms.ModelForm):
     class Meta:
         model = ProduceItem
-        fields = ('produce_name', 'expiration', 'description', 'price')
+        fields = ('produce_name', 'expiration', 'description', 'price', 'approved')
         widgets = {
             'produce_name': forms.TextInput(attrs={'class': 'form-control'}),
             'expiration': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'MM/DD/YYYY'}),
             'description': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'approved': forms.CheckboxInput(attrs={}),
         }
         labels = {
             'produce_name': _('Produce Name'),
             'expiration': _('Expiration'),
             'description': _('Description'),
             'price': _('Price'),
+            'approved': _('Approve'),
         }

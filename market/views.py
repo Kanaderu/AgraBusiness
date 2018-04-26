@@ -197,18 +197,18 @@ class ProduceItemListView(ListView):
 
 
 # Detail view for produce item
-class ProduceItemDetailView(DetailView):
+class ProduceItemGetView(DetailView):
     model = ProduceItem
     template_name = 'produce_item.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ProduceItemDetailView, self).get_context_data(**kwargs)
+        context = super(ProduceItemGetView, self).get_context_data(**kwargs)
         context['form'] = AddProduceItemToCart()
         return context
 
 
 # POST/Form view for produce item adding to cart
-class ProduceItemFormView(SingleObjectMixin, FormView):
+class ProduceItemPostView(SingleObjectMixin, FormView):
     form_class = AddProduceItemToCart
     model = ProduceItem
     template_name = 'produce_item.html'
@@ -249,12 +249,36 @@ class ProduceItemView(View):
     template_name = 'produce_item.html'
 
     def get(self, request, *args, **kwargs):
-        view = ProduceItemDetailView.as_view()
+        view = ProduceItemGetView.as_view()
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        view = ProduceItemFormView.as_view()
+        view = ProduceItemPostView.as_view()
         return view(request, *args, **kwargs)
+
+
+class ProduceItemApprove(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        # manager roles only permitted to approve
+        if self.request.user.userinfo.user_type == 'm':
+            pkVal = kwargs['pk']
+            item = get_object_or_404(ProduceItem, pk=pkVal)
+            item.approved = True
+            item.save()
+        return redirect('produce-list')
+
+
+class ProduceItemDecline(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        # manager roles only permitted to decline
+        if self.request.user.userinfo.user_type == 'm':
+            pkVal = kwargs['pk']
+            item = get_object_or_404(ProduceItem, pk=pkVal)
+            item.approved = False
+            item.save()
+        return redirect('produce-list')
 
 
 # Cart View
@@ -403,6 +427,13 @@ class CheckoutShipmentView(LoginRequiredMixin, View):
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order_list.html'
+
+    def get_queryset(self):
+        # supply all order if manager else only orders associated with user
+        if self.request.user.userinfo.user_type == 'm':
+            return Order.objects.all()
+        else:
+            return Order.objects.filter(user=self.request.user)
 
 
 # Detail view for produce item

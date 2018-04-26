@@ -6,6 +6,7 @@
 <form method="post">
     {% csrf_token %}
     {% for field in produce_form %}
+        {% if field.html_name != 'approved' %}
         <p>
             <div class="form-group" style="width:500px">
                 {{ field.label_tag }}<br>
@@ -18,6 +19,7 @@
                 {% endfor %}
             </div>
         </p>
+        {% endif %}
     {% endfor %}
 
     <button type="submit" class="btn btn-primary">Sell Produce</button>
